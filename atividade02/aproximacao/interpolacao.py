@@ -59,6 +59,8 @@ def interpolar(abscissas, ordenadas, alvo, grau=2, metodo="lagrange"):
     margem = (maximo-minimo)*0.08
     curva_x = [minimo-margem+(maximo-minimo+2*margem)*i/240 for i in range(241)]
     avaliar = lambda x: avaliar_newton(nos_x, coeficientes, x)[0]
+    parcelas_curva = [avaliar_lagrange(nos_x, nos_y, x)[1] if metodo == "lagrange"
+                      else avaliar_newton(nos_x, coeficientes, x)[1] for x in curva_x]
     comparacao = []
     for g in range(2, min(4, len(xs)-1)+1):
         ids = sorted(sorted(range(len(xs)), key=lambda i: (abs(xs[i]-alvo), xs[i]))[:g+1])
@@ -69,6 +71,7 @@ def interpolar(abscissas, ordenadas, alvo, grau=2, metodo="lagrange"):
     return {"valor": valor_l if metodo == "lagrange" else valor_n,
             "passos": passos, "nos_x": nos_x, "nos_y": nos_y, "indices": indices,
             "curva_x": curva_x, "curva_y": [avaliar(x) for x in curva_x],
+            "curvas_parcelas": [[linha[i] for linha in parcelas_curva] for i in range(grau+1)],
             "coeficientes": coeficientes, "diferencas": tabela, "comparacao": comparacao,
             "extrapolacao": not xs[0] <= alvo <= xs[-1], "convergiu": True,
             "status": "Extrapolação: alvo fora dos dados" if not xs[0] <= alvo <= xs[-1] else "Interpolação calculada"}
