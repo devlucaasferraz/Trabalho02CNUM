@@ -30,6 +30,36 @@ const state = {
 };
 const editor = new Editor(markDirty, showError);
 
+// Apenas a preferência de navegação é persistida; os dados dos cálculos não são.
+const sidebarPreference = "entre-pontos-sidebar-collapsed";
+function setSidebarCollapsed(collapsed) {
+  document.body.classList.toggle("sidebar-collapsed", collapsed);
+  $("example-library").hidden = collapsed;
+  $("toggle-sidebar").setAttribute("aria-expanded", String(!collapsed));
+  $("toggle-sidebar").setAttribute(
+    "aria-label",
+    collapsed ? "Mostrar exemplos" : "Ocultar exemplos",
+  );
+  try {
+    localStorage.setItem(sidebarPreference, String(collapsed));
+  } catch {
+    // A navegação continua funcionando se o navegador bloquear armazenamento.
+  }
+}
+try {
+  const savedPreference = localStorage.getItem(sidebarPreference);
+  setSidebarCollapsed(
+    savedPreference === null
+      ? window.matchMedia("(max-width: 900px)").matches
+      : savedPreference === "true",
+  );
+} catch {
+  setSidebarCollapsed(false);
+}
+$("toggle-sidebar").addEventListener("click", () => {
+  setSidebarCollapsed(!$("example-library").hidden);
+});
+
 function showError(message) {
   $("input-error").textContent = message;
   $("input-error").hidden = false;
@@ -74,8 +104,8 @@ function setHeader(data) {
     data.descricao ||
     "Insira seus dados, escolha um método e acompanhe cada etapa do cálculo.";
   $("eyebrow").textContent = data.codigo
-    ? `EXEMPLO ${data.codigo} · DO DADO À DESCOBERTA`
-    : "SEUS DADOS · SUAS DESCOBERTAS";
+    ? `Exemplo ${data.codigo}`
+    : "Dados próprios";
   $("topic").textContent = topicNames[groupOf(data.metodo)];
   $("model-note").textContent =
     data.nota ||
@@ -255,7 +285,7 @@ function renderMetrics() {
   if (r.solucao) {
     $("metrics").append(
       metric(
-        "INCÓGNITAS",
+        "Incógnitas",
         String(r.solucao.length),
         "valores",
         r.metodo === "gauss"
@@ -263,13 +293,13 @@ function renderMetrics() {
           : "Atualizações sequenciais",
       ),
       metric(
-        "RESÍDUO MÁXIMO",
+        "Resíduo máximo",
         format(r.residuo),
         "",
         "max |Ax − b| no sistema original",
       ),
       metric(
-        r.metodo === "gauss" ? "OPERAÇÕES" : "ITERAÇÕES",
+        r.metodo === "gauss" ? "Operações" : "Iterações",
         String(r.metodo === "gauss" ? r.passos.length - 1 : r.iteracoes),
         "",
         r.convergiu ? "Resultado verificado" : "Precisão não atingida",
@@ -278,30 +308,30 @@ function renderMetrics() {
   } else if (groupOf(r.metodo) === "interpolacao") {
     $("metrics").append(
       metric(
-        "ESTIMATIVA NO ALVO",
+        "Estimativa no alvo",
         format(r.valor),
         d.unidade || "",
         "P(x) no ponto informado",
       ),
-      metric("ALVO", format(d.alvo), "", d.eixo_x || "Coordenada x"),
-      metric("GRAU", String(d.grau), "", `${r.nos_x.length} nós utilizados`),
+      metric("Alvo", format(d.alvo), "", d.eixo_x || "Coordenada x"),
+      metric("Grau", String(d.grau), "", `${r.nos_x.length} nós utilizados`),
     );
   } else {
     $("metrics").append(
       metric(
-        d.id === "rio" ? "ÁREA DA SEÇÃO" : "INTEGRAL COM SINAL",
+        d.id === "rio" ? "Área da seção" : "Integral com sinal",
         format(r.valor),
         d.unidade || "",
         "Estimativa numérica",
       ),
       metric(
-        "ESPAÇAMENTO",
+        "Espaçamento",
         format(r.h),
         d.id === "rio" ? "m" : "",
         "Passo h entre medições",
       ),
       metric(
-        "SUBINTERVALOS",
+        "Subintervalos",
         String(r.subintervalos),
         "",
         `${r.passos.length} painéis do método`,
@@ -577,6 +607,10 @@ $("examples").addEventListener("click", (event) => {
     loadExample(
       state.examples.find((item) => item.id === button.dataset.example),
     );
+  if (button && window.matchMedia("(max-width: 900px)").matches) {
+    setSidebarCollapsed(true);
+    $("toggle-sidebar").focus();
+  }
 });
 $("method").addEventListener("change", () => {
   const next = $("method").value;
@@ -593,6 +627,8 @@ $("method").addEventListener("change", () => {
 });
 $("custom").addEventListener("click", () => {
   loadExample(customData($("method").value), false);
+  if (window.matchMedia("(max-width: 900px)").matches)
+    setSidebarCollapsed(true);
   $("editor").querySelector("input")?.focus();
 });
 $("reset").addEventListener("click", () => {
@@ -670,7 +706,7 @@ $("download-svg").addEventListener("click", () => {
   copy.setAttribute("xmlns", "http://www.w3.org/2000/svg");
   const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
   style.textContent =
-    "text{font-family:Arial,sans-serif;font-size:11px;fill:#71826a}.strong{fill:#315c45;font-weight:bold}.point-label{font-size:10px}.axis-label{font-size:10px}";
+    "text{font-family:Arial,sans-serif;font-size:var(--chart-font-size,16px);fill:#415c49}.strong{fill:#315c45;font-weight:bold}.point-label,.axis-label{font-size:var(--chart-label-size,14px)}";
   copy.prepend(style);
   copy.setAttribute(
     "aria-label",

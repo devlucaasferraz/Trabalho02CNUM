@@ -582,6 +582,11 @@ function drawTruss(result, data, index) {
 }
 
 export function drawChart(result, data, index, view) {
+  // Matrizes grandes precisam de espaço para os números, não de fontes menores.
+  $("chart").style.minWidth =
+    result.metodo === "gauss" && view !== "solucao"
+      ? `${Math.max(620, data.a.length * 85)}px`
+      : "620px";
   $("chart").replaceChildren(
     svg("title", {}, `${result.nome_metodo} · visualização didática`),
   );
@@ -621,6 +626,14 @@ export function drawChart(result, data, index, view) {
 export function initializeTooltips() {
   const chart = $("chart"),
     tooltip = $("tooltip");
+  // O viewBox escala os textos com o gráfico. Compensamos essa escala para
+  // preservar 16 px nos valores e 14 px nos rótulos ao retrair a navegação.
+  new ResizeObserver(([entry]) => {
+    const width = entry.contentRect.width;
+    if (!width) return;
+    chart.style.setProperty("--chart-font-size", `${(16 * 760) / width}px`);
+    chart.style.setProperty("--chart-label-size", `${(14 * 760) / width}px`);
+  }).observe(chart);
   function show(event) {
     const node = event.target.closest("[data-tip]");
     if (!node) return;

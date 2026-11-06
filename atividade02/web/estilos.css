@@ -1,7 +1,7 @@
 :root {
   --paper: #f4f5f0;
   --ink: #203530;
-  --muted: #708079;
+  --muted: #53665c;
   --line: #e2e7df;
   --green: #25715e;
   --mint: #e9f2e9;
@@ -11,7 +11,7 @@
   --sidebar: #163c36;
   font-family: "Segoe UI", Arial, sans-serif;
   color: var(--ink);
-  font-size: 14px;
+  font-size: 16px;
   font-synthesis: none;
 }
 * {
@@ -69,7 +69,7 @@ button:hover:not(:disabled) {
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
-  width: 224px;
+  width: 260px;
   background: var(--sidebar);
   color: #dbe7da;
   padding: 30px 19px;
@@ -90,9 +90,9 @@ button:hover:not(:disabled) {
 .brand small {
   display: block;
   font:
-    8px "Segoe UI",
+    14px "Segoe UI",
     sans-serif;
-  letter-spacing: 2.4px;
+  letter-spacing: 0;
   color: #a1bcb0;
   margin-top: 6px;
 }
@@ -107,8 +107,8 @@ button:hover:not(:disabled) {
   color: #c6e1ac;
 }
 .sidebar-section {
-  font-size: 11px;
-  letter-spacing: 1.7px;
+  font-size: 14px;
+  letter-spacing: 0;
   color: #95b3a5;
   margin: 0 11px 14px;
 }
@@ -120,7 +120,7 @@ button:hover:not(:disabled) {
   text-align: left;
   padding: 12px;
   margin-bottom: 34px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .custom-button span {
   font-size: 19px;
@@ -141,7 +141,7 @@ nav {
   display: flex;
   gap: 10px;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.5;
   min-height: 64px;
 }
@@ -151,7 +151,7 @@ nav {
   color: #e0eadd;
 }
 .example-button small {
-  font-size: 12px;
+  font-size: 14px;
   color: #91b1a0;
 }
 .example-button .example-icon {
@@ -176,13 +176,13 @@ nav {
 .sidebar-bottom {
   margin-top: auto;
   padding: 25px 10px 0;
-  font-size: 12px;
+  font-size: 14px;
   color: #c6d6c3;
   line-height: 1.9;
 }
 .sidebar-bottom small {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   color: #8fae9e;
   margin-top: 9px;
   line-height: 1.8;
@@ -196,7 +196,7 @@ nav {
   margin-right: 6px;
 }
 main {
-  margin-left: 224px;
+  margin-left: 260px;
   padding: 0 34px;
   max-width: 1900px;
 }
@@ -206,8 +206,8 @@ main {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid var(--line);
-  font-size: 11px;
-  letter-spacing: 1.4px;
+  font-size: 14px;
+  letter-spacing: 0;
   color: var(--muted);
 }
 .divider {
@@ -216,12 +216,12 @@ main {
 }
 .topbar #topic {
   letter-spacing: 0.3px;
-  font-size: 12px;
+  font-size: 14px;
 }
 .text-button {
   background: none;
   color: #587166;
-  font-size: 12px;
+  font-size: 14px;
   padding: 7px 0;
   white-space: nowrap;
 }
@@ -235,29 +235,29 @@ main {
   padding: 28px 0 25px;
 }
 .eyebrow {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: 2px;
+  letter-spacing: 0;
   color: var(--green);
   margin-bottom: 9px;
 }
 h1 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
-  font-size: 36px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 600;
+  font-size: 32px;
   letter-spacing: -1px;
   margin: 0 0 9px;
   line-height: 1.15;
 }
 .intro p {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--muted);
   margin: 0;
   max-width: 640px;
   line-height: 1.7;
 }
 .edition {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.8;
   color: #879387;
   border-left: 1px solid #d9dfd3;
@@ -271,7 +271,7 @@ h1 {
 }
 .workspace {
   display: grid;
-  grid-template-columns: minmax(290px, 335px) minmax(0, 1fr);
+  grid-template-columns: minmax(320px, 350px) minmax(0, 1fr);
   gap: 22px;
   align-items: start;
 }
@@ -279,7 +279,7 @@ h1 {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: 12px;
-  box-shadow: 0 3px 8px #223d3010;
+  box-shadow: none;
   overflow: hidden;
 }
 .panel-heading {
@@ -292,19 +292,19 @@ h1 {
   min-height: 62px;
 }
 .panel-heading h2 {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin: 0;
   letter-spacing: -0.1px;
 }
 .section-number {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: #9aa79b;
   padding-right: 10px;
 }
 .badge {
-  font-size: 11px;
+  font-size: 14px;
   background: #edf3e9;
   border: 1px solid #dfe8d8;
   color: #68805e;
@@ -317,7 +317,7 @@ form {
 }
 label {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   color: #4d6257;
   font-weight: 600;
   margin-bottom: 7px;
@@ -335,21 +335,21 @@ textarea {
 select {
   width: 100%;
   height: 37px;
-  font-size: 13px;
+  font-size: 14px;
 }
 input {
   width: 100%;
   font-variant-numeric: tabular-nums;
-  font-size: 13px;
+  font-size: 14px;
 }
 textarea {
   width: 100%;
   resize: vertical;
   line-height: 1.6;
-  font-size: 13px;
+  font-size: 14px;
 }
 .field-hint {
-  font-size: 12px;
+  font-size: 14px;
   color: #809084;
   line-height: 1.6;
   margin: 8px 0 17px;
@@ -367,7 +367,7 @@ textarea {
 .editor-toolbar select {
   width: 70px;
   height: 29px;
-  font-size: 12px;
+  font-size: 14px;
   padding: 3px;
 }
 .table-scroll {
@@ -381,7 +381,7 @@ textarea {
   border-spacing: 0 6px;
 }
 .data-table th {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: #8a988c;
   text-align: center;
@@ -404,7 +404,7 @@ textarea {
   border-radius: 4px;
 }
 .data-table .row-label {
-  font-size: 12px;
+  font-size: 14px;
   color: #798879;
   white-space: nowrap;
   padding-right: 6px;
@@ -421,7 +421,7 @@ textarea {
   border: 1px solid #e1e7dc;
   border-radius: 5px;
   color: #62816a;
-  font-size: 12px;
+  font-size: 14px;
   padding: 5px 9px;
 }
 .remove-point {
@@ -442,7 +442,7 @@ textarea {
   margin: 15px 0;
 }
 .two-fields label {
-  font-size: 12px;
+  font-size: 14px;
 }
 .two-fields input {
   margin-top: 5px;
@@ -451,7 +451,7 @@ textarea {
   display: flex;
   align-items: flex-start;
   gap: 7px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.6;
   margin: 11px 0;
@@ -463,7 +463,7 @@ textarea {
 }
 .paste-details {
   margin: 13px 0;
-  font-size: 12px;
+  font-size: 14px;
   color: #748772;
 }
 .paste-details textarea {
@@ -486,7 +486,7 @@ details > summary {
   padding: 8px 12px;
 }
 .small {
-  font-size: 12px;
+  font-size: 14px;
 }
 .primary {
   width: 100%;
@@ -497,7 +497,7 @@ details > summary {
   color: #fff;
   border-radius: 6px;
   padding: 12px 15px;
-  font-size: 13px;
+  font-size: 14px;
   margin-top: 16px;
   box-shadow: 0 3px 6px #2d614b18;
 }
@@ -511,13 +511,13 @@ details > summary {
   margin: 8px 0;
 }
 .input-actions .text-button {
-  font-size: 12px;
+  font-size: 14px;
 }
 .context-details {
   border-top: 1px solid #edf0e9;
   padding: 14px 20px;
   color: #74856e;
-  font-size: 12px;
+  font-size: 14px;
 }
 .context-details p {
   line-height: 1.8;
@@ -528,7 +528,7 @@ details > summary {
   background: #fff3ec;
   border: 1px solid #efd3c6;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.6;
   padding: 10px;
   margin-top: 12px;
@@ -551,7 +551,7 @@ details > summary {
 }
 .metric small {
   display: block;
-  font-size: 11px;
+  font-size: 14px;
   color: #82907e;
   margin-bottom: 6px;
 }
@@ -563,12 +563,12 @@ details > summary {
   font-variant-numeric: tabular-nums;
 }
 .metric .metric-unit {
-  font-size: 12px;
+  font-size: 14px;
   color: #7f8d79;
   padding-left: 5px;
 }
 .metric-caption {
-  font-size: 11px;
+  font-size: 14px;
   color: #93a08d;
   margin-top: 4px;
 }
@@ -580,12 +580,12 @@ details > summary {
   padding: 12px 25px 0;
 }
 .chart-toolbar h3 {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin: 0 0 4px;
 }
 .chart-toolbar p {
-  font-size: 12px;
+  font-size: 14px;
   color: #8b9787;
   margin: 0;
 }
@@ -600,7 +600,7 @@ details > summary {
   display: none;
 }
 .segmented button {
-  font-size: 11px;
+  font-size: 14px;
   padding: 5px 9px;
   background: transparent;
   border-radius: 4px;
@@ -625,14 +625,14 @@ details > summary {
 #chart text {
   font-family: "Segoe UI", Arial, sans-serif;
   fill: #85917e;
-  font-size: 12px;
+  font-size: 14px;
 }
 #chart .axis-label {
-  font-size: 12px;
+  font-size: 14px;
   fill: #7c8978;
 }
 #chart .point-label {
-  font-size: 12px;
+  font-size: 14px;
   fill: #55714d;
 }
 #chart .strong {
@@ -646,7 +646,7 @@ details > summary {
   color: #fff;
   border-radius: 6px;
   padding: 8px 11px;
-  font-size: 12px;
+  font-size: 14px;
   z-index: 2;
   max-width: 230px;
   box-shadow: 0 3px 10px #1233;
@@ -657,7 +657,7 @@ details > summary {
   justify-content: center;
   gap: 16px;
   min-height: 25px;
-  font-size: 11px;
+  font-size: 14px;
   color: #85927e;
   padding: 0 18px 12px;
 }
@@ -695,7 +695,7 @@ details > summary {
   flex-shrink: 0;
 }
 .icon-button#play {
-  font-size: 12px;
+  font-size: 14px;
 }
 input[type="range"] {
   padding: 0;
@@ -706,7 +706,7 @@ input[type="range"] {
   min-width: 25px;
 }
 .stepper #step-counter {
-  font-size: 11px;
+  font-size: 14px;
   color: #7f8d74;
   white-space: nowrap;
   min-width: 52px;
@@ -714,7 +714,7 @@ input[type="range"] {
 .stepper select {
   width: 68px;
   height: 27px;
-  font-size: 11px;
+  font-size: 14px;
   padding: 0 3px;
 }
 .step-explanation {
@@ -729,12 +729,12 @@ input[type="range"] {
   line-height: 24px;
 }
 .step-explanation h3 {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   margin: 0 0 6px;
 }
 .step-explanation p {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.8;
   color: #819078;
   margin: 0;
@@ -748,7 +748,7 @@ input[type="range"] {
   margin-top: 12px;
   font-variant-numeric: tabular-nums;
   width: 100%;
-  font-size: 12px;
+  font-size: 14px;
 }
 .step-matrix td {
   border: 1px solid #e8eddf;
@@ -766,7 +766,7 @@ input[type="range"] {
   justify-content: space-between;
   align-items: center;
   padding: 10px 24px;
-  font-size: 11px;
+  font-size: 14px;
   color: #88977a;
 }
 .result-footer #status {
@@ -776,13 +776,13 @@ input[type="range"] {
 .result-footer #status:before {
   content: "●";
   color: #7ca566;
-  font-size: 7px;
+  font-size: 14px;
   padding-right: 6px;
 }
 .notice {
   background: #fbf5e8;
   color: #977435;
-  font-size: 12px;
+  font-size: 14px;
   padding: 10px 20px;
   line-height: 1.7;
   margin: 0 22px 15px;
@@ -808,7 +808,7 @@ input[type="range"] {
   color: #4b6953;
 }
 .empty p {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.7;
 }
 .details-panel {
@@ -828,11 +828,11 @@ input[type="range"] {
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  font-size: 12px;
+  font-size: 14px;
   font-variant-numeric: tabular-nums;
 }
 .comparison-table th {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
   color: #819077;
   padding: 0 12px 9px;
@@ -855,7 +855,7 @@ input[type="range"] {
 #history-details {
   padding: 13px 24px;
   border-top: 1px solid #edf0e9;
-  font-size: 12px;
+  font-size: 14px;
   color: #7e8e72;
 }
 #history {
@@ -879,7 +879,7 @@ input[type="range"] {
   margin-bottom: 22px;
   background: #edf4e5;
   color: #627752;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.8;
 }
 .guide p {
@@ -888,13 +888,13 @@ input[type="range"] {
 .page-footer {
   display: flex;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 14px;
   color: #a0ac94;
   padding: 24px 0 22px;
 }
 .page-footer span {
-  letter-spacing: 2px;
-  font-size: 10px;
+  letter-spacing: 0;
+  font-size: 14px;
 }
 .sr-only {
   position: absolute;
@@ -968,35 +968,35 @@ body.enlarged {
 }
 @media (max-width: 1150px) {
   .sidebar {
-    width: 185px;
+    width: 260px;
     padding: 25px 12px;
   }
   .brand {
     font-size: 19px;
   }
   .brand small {
-    font-size: 7px;
+    font-size: 14px;
   }
   .example-button {
-    font-size: 12px;
+    font-size: 14px;
     padding: 10px 7px;
   }
   .example-button small {
-    font-size: 11px;
+    font-size: 14px;
   }
   main {
-    margin-left: 185px;
+    margin-left: 260px;
     padding: 0 20px;
   }
   .workspace {
-    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-columns: 320px minmax(0, 1fr);
     gap: 15px;
   }
   .panel-heading {
     padding: 16px;
   }
   .panel-heading h2 {
-    font-size: 12px;
+    font-size: 14px;
   }
   .metrics {
     padding: 17px 18px;
@@ -1005,7 +1005,7 @@ body.enlarged {
     font-size: 20px;
   }
   .metric small {
-    font-size: 10px;
+    font-size: 14px;
   }
   .stepper {
     padding: 12px;
@@ -1062,7 +1062,7 @@ body.enlarged {
     min-height: 55px;
   }
   .workspace {
-    grid-template-columns: 290px minmax(0, 1fr);
+    grid-template-columns: 320px minmax(0, 1fr);
   }
   .intro {
     padding: 22px 0;
@@ -1090,7 +1090,7 @@ body.enlarged {
     gap: 10px;
   }
   .export-actions .text-button {
-    font-size: 12px;
+    font-size: 14px;
   }
   .panel-heading {
     gap: 7px;
@@ -1121,7 +1121,7 @@ body.enlarged {
     display: inline;
   }
   .topbar {
-    font-size: 10px;
+    font-size: 14px;
   }
   .topbar #topic {
     display: none;
@@ -1133,7 +1133,7 @@ body.enlarged {
     font-size: 30px;
   }
   .intro p {
-    font-size: 12px;
+    font-size: 14px;
   }
   .chart-toolbar {
     padding: 15px 20px 0;
@@ -1150,7 +1150,7 @@ body.enlarged {
     display: block;
   }
   .page-footer {
-    font-size: 10px;
+    font-size: 14px;
     gap: 8px;
   }
   .comparison-table td,
@@ -1172,7 +1172,7 @@ body.enlarged {
     min-height: 110px;
   }
   .metric-caption {
-    font-size: 10px;
+    font-size: 14px;
   }
   .result-footer {
     padding: 10px 18px;
@@ -1233,13 +1233,13 @@ body.enlarged {
     padding-top: 0;
   }
   .notice {
-    font-size: 11px;
+    font-size: 14px;
   }
   #comparison {
     padding: 12px;
   }
   .comparison-table {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
@@ -1250,7 +1250,7 @@ body.enlarged {
   margin: 20px 0 12px;
 }
 .quick-inputs label {
-  font-size: 12px;
+  font-size: 14px;
   margin: 0;
 }
 .quick-inputs input {
@@ -1263,7 +1263,7 @@ body.enlarged {
   border-radius: 6px;
   padding: 10px;
   margin-bottom: 18px;
-  font-size: 12px;
+  font-size: 14px;
   color: #61765b;
 }
 .matrix-details[open] {
@@ -1281,13 +1281,7 @@ body.enlarged {
   background: white;
   z-index: 1;
 }
-#chart text {
-  font-size: 13px;
-}
-#chart .axis-label,
-#chart .point-label {
-  font-size: 12px;
-}
+
 .notice {
   color: #805c23;
 }
@@ -1295,4 +1289,452 @@ body.enlarged {
 .step-explanation p,
 .intro p {
   color: #65775f;
+}
+
+/* Navegação retrátil e hierarquia tipográfica de uso, sem microtextos. */
+.topbar-navigation {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+.sidebar-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid #cbd5cd;
+  border-radius: 6px;
+  background: white;
+  color: #294b3c;
+  font-size: 15px;
+}
+.sidebar-toggle svg {
+  flex-shrink: 0;
+}
+.sidebar-collapsed main {
+  margin-left: 0;
+}
+.sidebar {
+  overflow-y: auto;
+}
+.brand {
+  margin-bottom: 32px;
+}
+.brand small {
+  margin-top: 5px;
+  color: #bbd1c4;
+}
+.sidebar-section {
+  color: #bbd1c4;
+  margin-left: 8px;
+}
+.example-button {
+  font-size: 16px;
+}
+.example-button small {
+  font-size: 14px;
+  color: #b4cdbd;
+}
+.example-button strong {
+  font-weight: 600;
+}
+.sidebar-bottom small {
+  color: #b4cdbd;
+}
+.custom-button {
+  font-size: 16px;
+  min-height: 44px;
+  margin-bottom: 28px;
+}
+.topbar #topic {
+  font-size: 16px;
+  letter-spacing: 0;
+  color: #4d6156;
+}
+.intro {
+  padding: 26px 0;
+}
+.eyebrow {
+  letter-spacing: 0;
+  color: #4f695b;
+  font-size: 14px;
+}
+.intro p {
+  font-size: 16px;
+  color: #4f6257;
+  line-height: 1.6;
+}
+.panel {
+  border-radius: 8px;
+}
+.panel-heading {
+  padding: 18px 22px;
+  flex-wrap: wrap;
+}
+.panel-heading h2 {
+  font-size: 18px;
+}
+label {
+  font-size: 15px;
+}
+input,
+select,
+textarea {
+  font-size: 16px;
+}
+select {
+  min-height: 44px;
+  height: auto;
+}
+input {
+  min-height: 42px;
+}
+.data-table input {
+  min-height: 40px;
+  height: 40px;
+}
+.data-table th,
+.data-table .row-label {
+  color: #53675b;
+}
+.field-hint,
+.paste-details,
+.context-details,
+.matrix-details {
+  font-size: 14px;
+  color: #53675b;
+}
+.two-fields label {
+  font-size: 14px;
+}
+.two-fields select {
+  padding-left: 6px;
+  padding-right: 6px;
+  font-size: 14px;
+}
+.two-fields input {
+  margin-top: 7px;
+}
+.checkbox {
+  font-size: 14px;
+  color: #405c4b;
+}
+.checkbox input {
+  min-height: 0;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.primary {
+  font-size: 16px;
+  font-weight: 600;
+  min-height: 46px;
+  box-shadow: none;
+}
+.text-button {
+  font-size: 14px;
+  color: #345944;
+}
+.tiny-button {
+  font-size: 14px;
+  min-height: 38px;
+}
+.editor-actions {
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.editor-actions .field-hint {
+  margin: 0;
+}
+.quick-inputs label {
+  font-size: 15px;
+}
+.quick-inputs input {
+  font-size: 17px;
+}
+.metrics {
+  grid-template-columns: 1.2fr 1fr 1fr;
+  padding: 22px;
+  gap: 16px;
+}
+.metric small {
+  font-size: 14px;
+  color: #4e6555;
+  text-transform: none;
+  line-height: 1.4;
+}
+.metric b {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+.metric .metric-unit {
+  font-size: 14px;
+  color: #4e6555;
+}
+.metric-caption {
+  display: none;
+}
+.chart-toolbar {
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 16px 22px 0;
+}
+.chart-toolbar h3 {
+  font-size: 17px;
+}
+.chart-toolbar p {
+  font-size: 14px;
+  color: #4f6555;
+  line-height: 1.6;
+}
+.segmented button {
+  font-size: 14px;
+  min-height: 36px;
+  color: #4d6554;
+}
+#chart {
+  max-height: none;
+}
+#chart text {
+  font-size: var(--chart-font-size, 16px);
+  fill: #415c49;
+}
+#chart .axis-label,
+#chart .point-label {
+  font-size: var(--chart-label-size, 15px);
+  fill: #415c49;
+}
+.legend {
+  font-size: 14px;
+  color: #405d49;
+  gap: 12px 20px;
+  line-height: 1.5;
+}
+.legend i {
+  width: 18px;
+  height: 4px;
+}
+.stepper {
+  gap: 10px;
+  padding: 14px 18px;
+  flex-wrap: wrap;
+}
+.icon-button {
+  width: 38px;
+  height: 38px;
+  font-size: 22px;
+}
+.icon-button#play {
+  font-size: 15px;
+}
+input[type="range"] {
+  min-height: 0;
+  height: 6px;
+}
+.stepper #step-counter {
+  font-size: 14px;
+  color: #405d49;
+}
+.stepper select {
+  width: 88px;
+  min-height: 36px;
+  font-size: 14px;
+  padding: 4px;
+}
+.step-explanation {
+  padding: 20px 22px;
+}
+.step-explanation h3 {
+  font-size: 17px;
+}
+.step-explanation p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: #3f5b47;
+}
+.result-footer {
+  padding: 14px 22px;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #405d49;
+  font-size: 14px;
+}
+.result-footer #status {
+  max-width: 100%;
+}
+.notice {
+  font-size: 15px;
+}
+.comparison-table {
+  font-size: 16px;
+}
+.comparison-table th {
+  font-size: 14px;
+  color: #4b6352;
+}
+#comparison {
+  overflow-x: auto;
+}
+#history-details {
+  font-size: 15px;
+  color: #405d49;
+}
+.export-actions {
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+.badge {
+  color: #3d6246;
+  font-size: 14px;
+}
+.enlarged .step-explanation p {
+  font-size: 18px;
+}
+.enlarged .step-explanation h3 {
+  font-size: 20px;
+}
+@media (max-width: 1150px) and (min-width: 901px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .input-panel form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 24px;
+  }
+  .input-panel form > * {
+    grid-column: 1;
+  }
+  .input-panel form > #editor {
+    grid-column: 2;
+    grid-row: 1 / span 8;
+  }
+  .input-panel .primary {
+    align-self: start;
+  }
+  .sidebar-collapsed .workspace {
+    grid-template-columns: 320px minmax(0, 1fr);
+  }
+  .sidebar-collapsed .input-panel form {
+    display: block;
+  }
+}
+@media (max-width: 900px) {
+  .sidebar {
+    position: static;
+    width: 100%;
+    padding: 20px;
+  }
+  .sidebar-bottom {
+    display: none;
+  }
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  main {
+    margin-left: 0;
+  }
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--paper);
+    min-height: 64px;
+    gap: 12px;
+  }
+  .topbar #topic {
+    font-size: 14px;
+    display: inline;
+  }
+  .example-button {
+    min-width: 200px;
+  }
+  .enlarged .topbar {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .topbar #topic {
+    display: none;
+  }
+  .sidebar-toggle {
+    font-size: 15px;
+  }
+  .intro h1 {
+    font-size: 28px;
+  }
+  .intro p {
+    font-size: 16px;
+  }
+  .metric b {
+    font-size: 26px;
+  }
+  .metrics {
+    gap: 10px;
+    padding: 18px 14px;
+  }
+  .metric small {
+    font-size: 14px;
+  }
+  .metric .metric-unit {
+    display: block;
+    padding-left: 0;
+  }
+  .chart-wrap {
+    overflow-x: auto;
+    margin: 8px 10px;
+  }
+  #chart {
+    min-width: 620px;
+  }
+  .step-explanation {
+    padding: 18px 16px;
+  }
+  .stepper select {
+    display: block;
+  }
+  .result-footer .text-button {
+    min-height: 36px;
+  }
+}
+@media print {
+  .sidebar-toggle {
+    display: none;
+  }
+  .input-panel form {
+    display: block;
+  }
+  #chart {
+    min-width: 0;
+  }
+}
+
+/* A biblioteca vira uma sobreposição em telas estreitas; o botão fica no topo. */
+.chart-wrap {
+  overflow-x: auto;
+}
+@media (max-width: 900px) {
+  .sidebar {
+    position: fixed;
+    inset: 64px 0 auto 0;
+    z-index: 20;
+    max-height: calc(100dvh - 64px);
+    overflow-y: auto;
+  }
+  .topbar {
+    z-index: 30;
+  }
+  .sidebar .brand {
+    display: none;
+  }
+  .sidebar-section {
+    display: block;
+  }
+  .sidebar nav {
+    flex-direction: column;
+  }
 }
