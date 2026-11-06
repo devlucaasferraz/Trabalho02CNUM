@@ -34,7 +34,6 @@ const editor = new Editor(markDirty, showError);
 const sidebarPreference = "entre-pontos-sidebar-collapsed";
 function setSidebarCollapsed(collapsed) {
   document.body.classList.toggle("sidebar-collapsed", collapsed);
-  $("sidebar-content").hidden = collapsed;
   $("toggle-sidebar").setAttribute("aria-expanded", String(!collapsed));
   $("toggle-sidebar").setAttribute(
     "aria-label",
@@ -59,8 +58,17 @@ try {
 } catch {
   setSidebarCollapsed(false);
 }
+// Aplica a preferência salva antes de habilitar a animação, evitando um salto
+// visual na primeira renderização. As transições seguintes vêm dos cliques.
+requestAnimationFrame(() =>
+  requestAnimationFrame(() => {
+    document.body.classList.add("navigation-ready");
+  }),
+);
 $("toggle-sidebar").addEventListener("click", () => {
-  setSidebarCollapsed(!$("sidebar-content").hidden);
+  setSidebarCollapsed(
+    document.body.classList.contains("sidebar-collapsed") === false,
+  );
 });
 
 function showError(message) {
@@ -792,11 +800,13 @@ async function start() {
       const button = element("button", {
         class: "example-button",
         "data-example": data.id,
+        "aria-label": `${title} ${subtitle}`,
+        title,
       });
       button.append(
         element("span", { class: "example-icon", "aria-hidden": "true" }, icon),
       );
-      const description = element("span");
+      const description = element("span", { class: "nav-label" });
       description.append(
         element("strong", {}, title),
         element("small", {}, subtitle),

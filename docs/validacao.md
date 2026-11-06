@@ -91,3 +91,18 @@ sem erros no console.
 
 - [Controle dentro da barra e rodapé removido](capturas/20-controle-na-barra.jpg)
 - [Faixa de navegação retraída](capturas/21-barra-retraida.jpg)
+
+## Navegação compacta com ícones
+
+A barra compacta agora preserva os links e botões; somente os rótulos visuais
+desaparecem. Conferidos os quatro exemplos, o botão de dados próprios e o retorno
+ao início pelo logo, todos com a barra retraída. Os botões têm nomes acessíveis e
+identificação ao passar o mouse; o exemplo selecionado permanece destacado.
+
+A largura da barra e o deslocamento do conteúdo usam transições de 280 ms.
+Conferidos abertura e fechamento, incluindo a largura intermediária durante a
+transição e a preservação dos 64 px após recarregar. A preferência salva é aplicada
+sem animação inicial; `prefers-reduced-motion` desativa as transições.
+Console sem erros nessa rodada.
+
+- [Logo e ícones clicáveis na barra compacta](capturas/22-navegacao-compacta-clicavel.jpg)

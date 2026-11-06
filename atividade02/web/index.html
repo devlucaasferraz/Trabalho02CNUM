@@ -18,7 +18,9 @@
       <div class="sidebar-header">
         <a class="brand" href="/" aria-label="Entre pontos, início"
           ><span class="brand-symbol">∿</span
-          ><span>entre pontos<small>Cálculo numérico</small></span></a
+          ><span class="brand-label"
+            >entre pontos<small>Cálculo numérico</small></span
+          ></a
         >
         <button
           id="toggle-sidebar"
@@ -53,8 +55,14 @@
         </button>
       </div>
       <div id="sidebar-content" class="sidebar-content">
-        <button id="custom" class="custom-button">
-          <span>＋</span> Usar meus dados
+        <button
+          id="custom"
+          class="custom-button"
+          aria-label="Usar meus dados"
+          title="Usar meus dados"
+        >
+          <span class="custom-icon" aria-hidden="true">＋</span>
+          <span class="nav-label">Usar meus dados</span>
         </button>
         <div class="sidebar-section">Exemplos do trabalho</div>
         <nav id="examples" aria-label="Exemplos prontos"></nav>

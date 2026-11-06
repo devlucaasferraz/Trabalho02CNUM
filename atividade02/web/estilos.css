@@ -1710,19 +1710,26 @@ input[type="range"] {
   }
 }
 
-/* O controle pertence à biblioteca; retraída, ela mantém uma faixa para reabrir. */
+/* A mesma navegação funciona aberta e em modo compacto, sem esconder os links. */
 .sidebar {
   z-index: 40;
   padding: 24px 16px;
+  transition:
+    width 280ms ease,
+    padding 280ms ease;
+}
+main {
+  transition: margin-left 280ms ease;
 }
 .sidebar-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   margin-bottom: 28px;
 }
 .sidebar-header .brand {
+  display: flex;
   margin: 0;
   font-size: 20px;
   gap: 8px;
@@ -1732,6 +1739,16 @@ input[type="range"] {
   width: 32px;
   height: 36px;
   flex-shrink: 0;
+}
+.brand-label,
+.nav-label {
+  display: block;
+  overflow: hidden;
+  max-width: 220px;
+  opacity: 1;
+  transition:
+    max-width 220ms ease,
+    opacity 160ms ease;
 }
 .sidebar-toggle {
   width: 36px;
@@ -1748,17 +1765,82 @@ input[type="range"] {
   flex-direction: column;
   min-height: 0;
 }
+.custom-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.custom-button .nav-label {
+  font-size: 16px;
+  margin: 0;
+}
+.custom-button .custom-icon {
+  margin: 0;
+  flex-shrink: 0;
+}
+.example-button .example-icon {
+  flex-shrink: 0;
+}
+.sidebar-section {
+  overflow: hidden;
+  max-height: 40px;
+  transition:
+    opacity 160ms ease,
+    max-height 220ms ease,
+    margin 220ms ease;
+}
 .sidebar-collapsed .sidebar {
   width: 64px;
   padding: 24px 14px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .sidebar-collapsed .sidebar-header {
-  justify-content: center;
-  margin-bottom: 0;
+  grid-template-columns: 36px;
+  justify-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 .sidebar-collapsed .brand {
-  display: none;
+  display: flex;
+  width: 36px;
+  gap: 0;
+  justify-content: center;
+}
+.sidebar-collapsed .sidebar-toggle {
+  grid-column: 1;
+  grid-row: 2;
+}
+.sidebar-collapsed .brand-label,
+.sidebar-collapsed .nav-label {
+  max-width: 0;
+  max-height: 0;
+  opacity: 0;
+}
+.sidebar-collapsed .sidebar-section {
+  max-height: 0;
+  margin: 0;
+  opacity: 0;
+}
+.sidebar-collapsed .custom-button {
+  width: 36px;
+  min-height: 40px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 20px;
+}
+.sidebar-collapsed .example-button {
+  width: 36px;
+  min-width: 36px;
+  min-height: 44px;
+  padding: 0;
+  justify-content: center;
+  gap: 0;
+}
+.sidebar-collapsed .example-button .example-icon {
+  display: grid;
+  width: 28px;
 }
 .sidebar-collapsed main {
   margin-left: 64px;
@@ -1771,11 +1853,8 @@ input[type="range"] {
     max-width: calc(100vw - 48px);
     max-height: none;
   }
-  .sidebar .brand {
+  .sidebar-header .brand {
     display: flex;
-  }
-  .sidebar-collapsed .brand {
-    display: none;
   }
   main {
     margin-left: 64px;
@@ -1785,12 +1864,27 @@ input[type="range"] {
     z-index: 5;
   }
 }
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  main,
+  .brand-label,
+  .nav-label,
+  .sidebar-section {
+    transition: none;
+  }
+}
+body:not(.navigation-ready) .sidebar,
+body:not(.navigation-ready) main,
+body:not(.navigation-ready) .brand-label,
+body:not(.navigation-ready) .nav-label,
+body:not(.navigation-ready) .sidebar-section {
+  transition: none;
+}
 @media print {
   .sidebar-collapsed main {
     margin-left: 0;
   }
 }
-
 .enlarged.sidebar-collapsed main {
   margin-left: 0;
 }

@@ -38,6 +38,9 @@ sistema e gráficos SVG são locais. Nenhum CDN ou serviço remoto é usado.
 1. Escolha um exemplo na biblioteca ou clique em **Usar meus dados**.
    O botão no cabeçalho da própria barra mostra ou retrai a biblioteca e lembra sua
    escolha. Em telas estreitas ela abre sobre o conteúdo e fecha após a seleção.
+   Retraída, mantém o logo, o botão de dados próprios e os quatro exemplos
+   acessíveis por ícones, com identificação ao passar o mouse. A transição é
+   animada e respeita a preferência por movimento reduzido.
 2. Selecione o método. Ao mudar para outra família de problemas, o editor abre
    uma tabela inicial apropriada para seus dados.
 3. Edite as células ou cole uma tabela separada por Tab ou ponto e vírgula.
