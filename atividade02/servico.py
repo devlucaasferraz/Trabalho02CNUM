@@ -6,7 +6,7 @@ from atividade02.metodos_diretos.gauss import resolver_gauss
 from atividade02.metodos_iterativos.gauss_seidel import resolver_gauss_seidel
 from atividade02.aproximacao.interpolacao import interpolar
 from atividade02.integracao.quadratura import integrar
-from atividade02.validacao import pontos
+from atividade02.validacao import numero, pontos
 
 METODOS = {
     "gauss": "Eliminação de Gauss",
@@ -56,10 +56,10 @@ def simular(entrada):
         a, b = entrada.get("a", []), entrada.get("b", [])
         modelo_preservado = (len(a) == 10 and len(b) == 10
                             and all(len(linha) == 10 for linha in a)
-                            and all(abs(float(a[i][j])-trelica['a'][i][j]) < 1e-12
+                            and all(abs(numero(a[i][j])-trelica['a'][i][j]) < 1e-12
                                     for i in range(10) for j in range(10))
-                            and all(float(b[i]) == 0 for i in range(10) if i not in (3, 7)))
+                            and all(numero(b[i]) == 0 for i in range(10) if i not in (3, 7)))
         if modelo_preservado:
             resultado["trelica"] = {"nos": trelica["nos"], "barras": trelica["barras"],
-                                    "rotulos": trelica["rotulos"], "cargas": [float(b[3]), float(b[7])]}
+                                    "rotulos": trelica["rotulos"], "cargas": [numero(b[3]), numero(b[7])]}
     return resultado

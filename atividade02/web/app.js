@@ -529,7 +529,9 @@ function renderHistory() {
 }
 
 function csvCell(value) {
-  return `"${String(value).replaceAll('"', '""')}"`;
+  const text = String(value);
+  const safe = /^[=+@]/.test(text) || /^-[^\d]/.test(text) ? `'${text}` : text;
+  return `"${safe.replaceAll('"', '""')}"`;
 }
 function exportCsv() {
   if (!state.result) return;

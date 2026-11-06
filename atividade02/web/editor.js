@@ -451,7 +451,10 @@ export class Editor {
     if (options.tolerancia !== undefined)
       result.tolerancia = numeric(options.tolerancia, "Tolerância");
     if (options.max_iteracoes !== undefined)
-      result.max_iteracoes = numeric(options.max_iteracoes, "Limite de iterações");
+      result.max_iteracoes = numeric(
+        options.max_iteracoes,
+        "Limite de iterações",
+      );
     return result;
   }
   applyPaste() {

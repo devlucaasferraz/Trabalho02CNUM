@@ -46,7 +46,13 @@ function tip(node, label) {
   return node;
 }
 
-function axes(xs, ys, xLabel, yLabel, { down = false, log = false, categorical = false } = {}) {
+function axes(
+  xs,
+  ys,
+  xLabel,
+  yLabel,
+  { down = false, log = false, categorical = false } = {},
+) {
   let xmin = Math.min(...xs),
     xmax = Math.max(...xs),
     ymin = Math.min(0, ...ys),
@@ -87,7 +93,8 @@ function axes(xs, ys, xLabel, yLabel, { down = false, log = false, categorical =
       "text-anchor": "end",
     });
     const x = xmin + ((xmax - xmin) * i) / 5;
-    if (!categorical) text(X(x), bottom + 20, format(x, 2), { "text-anchor": "middle" });
+    if (!categorical)
+      text(X(x), bottom + 20, format(x, 2), { "text-anchor": "middle" });
   }
   line(left, Y(0), right, Y(0), {
     stroke: log ? "none" : "#b8c6b1",
@@ -214,19 +221,12 @@ function drawInterpolation(result, data, index, view) {
 
 function drawIntegration(result, data, index) {
   const down = data.id === "rio";
-  const { X, Y } = axes(
-    data.xs,
-    data.ys,
-    data.eixo_x || "x",
-    data.eixo_y || "y",
-    { down },
-  );
-  result.passos.forEach((step, k) => {
+  const panels = result.passos.map((step) => {
     const points = [];
     if (result.metodo === "trapezio") {
       points.push(
-        [X(data.xs[step.inicio]), Y(data.ys[step.inicio])],
-        [X(data.xs[step.fim]), Y(data.ys[step.fim])],
+        [data.xs[step.inicio], data.ys[step.inicio]],
+        [data.xs[step.fim], data.ys[step.fim]],
       );
     } else {
       const i = step.inicio,
@@ -240,9 +240,20 @@ function drawIntegration(result, data, index) {
           (data.ys[i] * (x - x1) * (x - x2)) / ((x0 - x1) * (x0 - x2)) +
           (data.ys[i + 1] * (x - x0) * (x - x2)) / ((x1 - x0) * (x1 - x2)) +
           (data.ys[i + 2] * (x - x0) * (x - x1)) / ((x2 - x0) * (x2 - x1));
-        points.push([X(x), Y(y)]);
+        points.push([x, y]);
       }
     }
+    return points;
+  });
+  const { X, Y } = axes(
+    data.xs,
+    [...data.ys, ...panels.flatMap((panel) => panel.map((point) => point[1]))],
+    data.eixo_x || "x",
+    data.eixo_y || "y",
+    { down },
+  );
+  result.passos.forEach((step, k) => {
+    const points = panels[k].map(([x, y]) => [X(x), Y(y)]);
     const polygon = [
       [X(data.xs[step.inicio]), Y(0)],
       ...points,
@@ -276,10 +287,15 @@ function drawIntegration(result, data, index) {
     "stroke-width": 1.7,
   });
   if (down)
-    text(X(10), Y(0) - 10, "superfície da água", {
-      "text-anchor": "middle",
-      class: "point-label",
-    });
+    text(
+      X((data.xs[0] + data.xs.at(-1)) / 2),
+      Y(0) - 10,
+      "superfície da água",
+      {
+        "text-anchor": "middle",
+        class: "point-label",
+      },
+    );
   data.xs.forEach((x, i) => {
     tip(
       add("circle", {
