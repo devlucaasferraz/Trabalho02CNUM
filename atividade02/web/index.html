@@ -15,57 +15,54 @@
       class="sidebar"
       aria-label="Biblioteca de exemplos"
     >
-      <a class="brand" href="/" aria-label="Entre pontos, início"
-        ><span class="brand-symbol">∿</span
-        ><span>entre pontos<small>Cálculo numérico</small></span></a
-      >
-      <button id="custom" class="custom-button">
-        <span>＋</span> Usar meus dados
-      </button>
-      <div class="sidebar-section">Exemplos do trabalho</div>
-      <nav id="examples" aria-label="Exemplos prontos"></nav>
-      <div class="sidebar-bottom">
-        <span class="offline-dot"></span> Funciona sem internet<small
-          >UNIVASF · LES710C · atividade 02<br />Todos os cálculos ficam neste
-          computador.</small
+      <div class="sidebar-header">
+        <a class="brand" href="/" aria-label="Entre pontos, início"
+          ><span class="brand-symbol">∿</span
+          ><span>entre pontos<small>Cálculo numérico</small></span></a
         >
+        <button
+          id="toggle-sidebar"
+          class="sidebar-toggle"
+          type="button"
+          aria-controls="sidebar-content"
+          aria-expanded="true"
+          aria-label="Ocultar exemplos"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <rect
+              x="3"
+              y="4"
+              width="18"
+              height="16"
+              rx="2"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <path
+              d="M9 4v16M5.5 8h1M5.5 12h1"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+          </svg>
+        </button>
+      </div>
+      <div id="sidebar-content" class="sidebar-content">
+        <button id="custom" class="custom-button">
+          <span>＋</span> Usar meus dados
+        </button>
+        <div class="sidebar-section">Exemplos do trabalho</div>
+        <nav id="examples" aria-label="Exemplos prontos"></nav>
       </div>
     </aside>
     <main>
       <header class="topbar">
         <div class="topbar-navigation">
-          <button
-            id="toggle-sidebar"
-            class="sidebar-toggle"
-            type="button"
-            aria-controls="example-library"
-            aria-expanded="true"
-            aria-label="Ocultar exemplos"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-            >
-              <rect
-                x="3"
-                y="4"
-                width="18"
-                height="16"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.6"
-              />
-              <path
-                d="M9 4v16M5.5 8h1M5.5 12h1"
-                stroke="currentColor"
-                stroke-width="1.6"
-              />
-            </svg>
-            <span>Exemplos</span>
-          </button>
           <span id="topic">Integração numérica</span>
         </div>
         <button id="help" class="text-button">

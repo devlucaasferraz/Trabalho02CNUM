@@ -79,3 +79,15 @@ Capturas dessa revisão substituem as anteriores como referência da interface:
 - [Barra retraída e tipografia revisada](capturas/17-navegacao-retraida-tipografia.jpg)
 - [Barra aberta](capturas/18-tipografia-barra-aberta.jpg)
 - [Tela estreita](capturas/19-tipografia-mobile.jpg)
+
+## Controle na própria barra
+
+O botão foi movido para o cabeçalho da biblioteca. Ao retrair, a barra mantém
+uma faixa de 64 px com o botão para reabertura. O conteúdo fica oculto e sai da
+navegação por teclado. A preferência continua preservada ao recarregar.
+Os textos de funcionamento offline, instituição e localização dos cálculos foram
+removidos do rodapé da barra. Conferidos abertura, retração e reabertura no navegador,
+sem erros no console.
+
+- [Controle dentro da barra e rodapé removido](capturas/20-controle-na-barra.jpg)
+- [Faixa de navegação retraída](capturas/21-barra-retraida.jpg)

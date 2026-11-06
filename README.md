@@ -36,7 +36,7 @@ sistema e gráficos SVG são locais. Nenhum CDN ou serviço remoto é usado.
 ## Explorar os dados
 
 1. Escolha um exemplo na biblioteca ou clique em **Usar meus dados**.
-   O botão **Exemplos**, no topo, mostra ou retrai a biblioteca e lembra sua
+   O botão no cabeçalho da própria barra mostra ou retrai a biblioteca e lembra sua
    escolha. Em telas estreitas ela abre sobre o conteúdo e fecha após a seleção.
 2. Selecione o método. Ao mudar para outra família de problemas, o editor abre
    uma tabela inicial apropriada para seus dados.

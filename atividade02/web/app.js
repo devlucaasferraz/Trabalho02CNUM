@@ -34,12 +34,15 @@ const editor = new Editor(markDirty, showError);
 const sidebarPreference = "entre-pontos-sidebar-collapsed";
 function setSidebarCollapsed(collapsed) {
   document.body.classList.toggle("sidebar-collapsed", collapsed);
-  $("example-library").hidden = collapsed;
+  $("sidebar-content").hidden = collapsed;
   $("toggle-sidebar").setAttribute("aria-expanded", String(!collapsed));
   $("toggle-sidebar").setAttribute(
     "aria-label",
     collapsed ? "Mostrar exemplos" : "Ocultar exemplos",
   );
+  $("toggle-sidebar").title = collapsed
+    ? "Mostrar exemplos"
+    : "Ocultar exemplos";
   try {
     localStorage.setItem(sidebarPreference, String(collapsed));
   } catch {
@@ -57,7 +60,7 @@ try {
   setSidebarCollapsed(false);
 }
 $("toggle-sidebar").addEventListener("click", () => {
-  setSidebarCollapsed(!$("example-library").hidden);
+  setSidebarCollapsed(!$("sidebar-content").hidden);
 });
 
 function showError(message) {
