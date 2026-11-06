@@ -1,1 +1,1 @@
-"""Métodos diretos para sistemas lineares; implementação pendente."""
+"""Métodos diretos para sistemas lineares com histórico das operações."""

@@ -1,2 +1,1 @@
-# A estrutura inicial usa apenas a biblioteca padrão do Python.
-# Adicionar dependências externas conforme forem utilizadas.
+# Sem dependências externas: Python 3.10+ e navegador moderno são suficientes.

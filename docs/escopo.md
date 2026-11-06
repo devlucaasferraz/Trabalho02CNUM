@@ -2,10 +2,9 @@
 
 ## Fonte
 
-Enunciado: [Atividade_complementar2026.2_LES710C.pdf](../../Atividade_complementar2026.2_LES710C.pdf),
-localizado na pasta que contém os projetos das duas atividades.
-Alguns dados estão em tabelas e figuras: conferir visualmente o PDF antes de
-transcrevê-los para os casos de demonstração.
+Enunciado: [Atividade_complementar2026.2_LES710C.pdf](../Atividade_complementar2026.2_LES710C.pdf),
+localizado na raiz deste projeto. As tabelas e figuras relevantes foram renderizadas
+e conferidas visualmente para transcrição dos exemplos.
 
 ## Requisitos gerais
 
@@ -44,10 +43,12 @@ transcrevê-los para os casos de demonstração.
   área da seção do rio por ambas as regras repetidas, considerando pontos
   igualmente espaçados. Verificar as condições de aplicação de Simpson.
 
-## Próximas etapas
+## Implementação
 
-1. Conferir visualmente as tabelas e figuras dos problemas 01.2, 02.2 e 04.1
-   e formular os modelos matemáticos.
-2. Implementar os métodos e verificar resultados com referências independentes.
-3. Desenvolver a interface para entrada de dados e apresentação dos resultados.
-4. Preparar o relatório e a demonstração.
+Os quatro exemplos e as entradas próprias compartilham uma única interface.
+Os métodos, históricos, validações, visualizações e exportações estão implementados.
+As formulações estão em [modelagem.md](modelagem.md); os testes e as capturas
+estão em [validacao.md](validacao.md).
+
+O relatório acadêmico final, o texto sobre a participação de cada integrante e
+a escolha do problema a apresentar ficam a cargo da equipe.

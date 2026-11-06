@@ -1,1 +1,1 @@
-"""Interpolação e ajustes por mínimos quadrados; implementação pendente."""
+"""Interpolação polinomial nas formas de Lagrange e Newton."""
