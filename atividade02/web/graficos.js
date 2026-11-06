@@ -3,13 +3,13 @@ import { $, format } from "./util.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const colors = {
-  green: "#367b63",
-  light: "#cce3cc",
-  orange: "#d39b4e",
-  blue: "#668eaf",
-  grid: "#e8ede1",
-  text: "#7b8e75",
-  red: "#b96355",
+  green: "var(--plot-green)",
+  light: "var(--plot-light)",
+  orange: "var(--plot-orange)",
+  blue: "var(--plot-blue)",
+  grid: "var(--plot-grid)",
+  text: "var(--plot-text)",
+  red: "var(--plot-red)",
 };
 function svg(tag, attributes = {}, text = "") {
   const node = document.createElementNS(NS, tag);
@@ -97,7 +97,7 @@ function axes(
       text(X(x), bottom + 20, format(x, 2), { "text-anchor": "middle" });
   }
   line(left, Y(0), right, Y(0), {
-    stroke: log ? "none" : "#b8c6b1",
+    stroke: log ? "none" : "var(--plot-baseline)",
     "stroke-width": 1,
   });
   text((left + right) / 2, 332, xLabel, {
@@ -134,7 +134,7 @@ function drawInterpolation(result, data, index, view) {
   path(
     result.curva_x.map((x, i) => [X(x), Y(result.curva_y[i])]),
     {
-      stroke: contributions ? "#b8c8ad" : colors.green,
+      stroke: contributions ? "var(--plot-reference)" : colors.green,
       "stroke-width": 2.6,
       "stroke-dasharray": contributions ? "5 4" : "none",
     },
@@ -169,14 +169,23 @@ function drawInterpolation(result, data, index, view) {
     const selected = result.indices.includes(i),
       active = i === result.indices[index];
     if (active)
-      add("circle", { cx: X(x), cy: Y(data.ys[i]), r: 12, fill: "#f7ead4" });
+      add("circle", {
+        cx: X(x),
+        cy: Y(data.ys[i]),
+        r: 12,
+        fill: "var(--plot-halo)",
+      });
     tip(
       add("circle", {
         cx: X(x),
         cy: Y(data.ys[i]),
         r: selected ? 5.5 : 4,
-        fill: active ? colors.orange : selected ? colors.green : "#b9c4b1",
-        stroke: "white",
+        fill: active
+          ? colors.orange
+          : selected
+            ? colors.green
+            : "var(--plot-unused)",
+        stroke: "var(--plot-surface)",
         "stroke-width": 2,
       }),
       `Ponto ${i + 1}: x = ${format(x)}; y = ${format(data.ys[i])}${selected ? " · nó utilizado" : ""}`,
@@ -188,7 +197,7 @@ function drawInterpolation(result, data, index, view) {
       cy: Y(result.valor),
       r: 6,
       fill: colors.orange,
-      stroke: "white",
+      stroke: "var(--plot-surface)",
       "stroke-width": 2,
     }),
     `Estimativa: P(${format(alvo)}) = ${format(result.valor)}`,
@@ -259,19 +268,28 @@ function drawIntegration(result, data, index) {
       ...points,
       [X(data.xs[step.fim]), Y(0)],
     ];
-    const fill = k === index ? "#f5e1bc" : k < index ? "#d0e5d1" : "#eff3ea";
+    const fill =
+      k === index
+        ? "var(--plot-panel-active)"
+        : k < index
+          ? "var(--plot-panel-done)"
+          : "var(--plot-panel-future)";
     tip(
       add("polygon", {
         points: polygon.map((p) => p.join(",")).join(" "),
         fill,
-        stroke: "white",
+        stroke: "var(--plot-surface)",
         "stroke-width": 1,
       }),
       `Painel ${k + 1}: ${format(step.parcela)} ${data.unidade || "unidades²"}; acumulado ${format(step.acumulado)}`,
     );
     path(points, {
       stroke:
-        k === index ? colors.orange : k < index ? colors.green : "#adbba5",
+        k === index
+          ? colors.orange
+          : k < index
+            ? colors.green
+            : "var(--plot-future-line)",
       "stroke-width": k === index ? 3 : 1.8,
     });
     line(
@@ -279,7 +297,7 @@ function drawIntegration(result, data, index) {
       Y(0),
       X(data.xs[step.inicio]),
       Y(data.ys[step.inicio]),
-      { stroke: "#b8c9ac", "stroke-dasharray": "3 3" },
+      { stroke: "var(--plot-divider)", "stroke-dasharray": "3 3" },
     );
   });
   line(X(data.xs[0]), Y(0), X(data.xs.at(-1)), Y(0), {
@@ -303,7 +321,7 @@ function drawIntegration(result, data, index) {
         cy: Y(data.ys[i]),
         r: 4.2,
         fill: colors.green,
-        stroke: "white",
+        stroke: "var(--plot-surface)",
         "stroke-width": 1.5,
       }),
       `x = ${format(x)}; ${down ? "profundidade" : "y"} = ${format(data.ys[i])}`,
@@ -351,12 +369,12 @@ function drawMatrix(result, data, index) {
         height: cellH - 4,
         rx: 5,
         fill: pivot
-          ? "#d7e9bd"
+          ? "var(--plot-pivot)"
           : j === n
-            ? "#edf4e4"
+            ? "var(--plot-rhs)"
             : Math.abs(v) < 1e-12
-              ? "#f8faf5"
-              : "#f0f3ec",
+              ? "var(--plot-zero)"
+              : "var(--plot-cell)",
       });
       tip(
         text(
@@ -441,7 +459,7 @@ function drawConvergence(result, data, index) {
   );
   path(
     errors.map((y, i) => [X(i), Y(y)]),
-    { stroke: "#d3ddca", "stroke-width": 2 },
+    { stroke: "var(--plot-history)", "stroke-width": 2 },
   );
   path(
     errors.slice(0, index + 1).map((y, i) => [X(i), Y(y)]),
@@ -463,7 +481,7 @@ function drawConvergence(result, data, index) {
       cy: Y(errors[index]),
       r: 5.5,
       fill: colors.orange,
-      stroke: "white",
+      stroke: "var(--plot-surface)",
       "stroke-width": 2,
     }),
     `Iteração ${index}: resíduo ${format(result.passos[index].residuo)}`,
@@ -492,7 +510,7 @@ function drawTruss(result, data, index) {
       value = values[i];
     const stroke =
       Math.abs(value) < 1e-5
-        ? "#b1bfa9"
+        ? "var(--plot-neutral)"
         : value > 0
           ? colors.blue
           : colors.orange;
@@ -512,7 +530,7 @@ function drawTruss(result, data, index) {
       width: 80,
       height: 17,
       rx: 4,
-      fill: "white",
+      fill: "var(--plot-surface)",
       opacity: 0.92,
     });
     text(mx, my - 7, `${model.rotulos[i]} ${format(value, 1)}`, {
@@ -525,8 +543,8 @@ function drawTruss(result, data, index) {
       cx: X(x),
       cy: Y(y),
       r: 5.5,
-      fill: "white",
-      stroke: "#55705a",
+      fill: "var(--plot-surface)",
+      stroke: "var(--plot-joint)",
       "stroke-width": 2,
     });
     text(
@@ -556,11 +574,11 @@ function drawTruss(result, data, index) {
       y = Y(0);
     add("polygon", {
       points: `${x},${y + 7} ${x - 12},${y + 24} ${x + 12},${y + 24}`,
-      fill: "#edf0e5",
-      stroke: "#acb9a2",
+      fill: "var(--plot-support)",
+      stroke: "var(--plot-support-line)",
     });
     line(x - 19, y + 30, x + 19, y + 30, {
-      stroke: "#a4b099",
+      stroke: "var(--plot-ground)",
       "stroke-width": 2,
     });
   }
@@ -617,7 +635,7 @@ export function drawChart(result, data, index, view) {
   meta.legend.forEach(([label, color]) => {
     const span = document.createElement("span"),
       dot = document.createElement("i");
-    dot.style.background = colors[color] || "#c6d0bc";
+    dot.style.background = colors[color] || "var(--plot-gray)";
     span.append(dot, document.createTextNode(label));
     $("legend").append(span);
   });

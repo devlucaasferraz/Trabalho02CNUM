@@ -106,3 +106,14 @@ sem animação inicial; `prefers-reduced-motion` desativa as transições.
 Console sem erros nessa rodada.
 
 - [Logo e ícones clicáveis na barra compacta](capturas/22-navegacao-compacta-clicavel.jpg)
+
+## Temas claro e escuro
+
+Conferidos alternância pela barra compacta, persistência ao recarregar e
+preservação de um valor editado durante a troca de tema. Os gráficos de rio,
+treliça e interpolação usam uma paleta compartilhada por variáveis CSS.
+O SVG exportado no modo escuro foi baixado e validado como XML, com fundo e
+paleta incorporados. Console sem erros nessa rodada.
+
+- [Tema escuro](capturas/23-tema-escuro.jpg)
+- [Tema claro](capturas/24-tema-claro.jpg)

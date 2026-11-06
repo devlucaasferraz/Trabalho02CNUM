@@ -41,6 +41,8 @@ sistema e gráficos SVG são locais. Nenhum CDN ou serviço remoto é usado.
    Retraída, mantém o logo, o botão de dados próprios e os quatro exemplos
    acessíveis por ícones, com identificação ao passar o mouse. A transição é
    animada e respeita a preferência por movimento reduzido.
+   O botão de sol/lua na base da barra alterna entre os temas claro e escuro.
+   A escolha fica salva; sem uma escolha, é seguida a preferência do sistema.
 2. Selecione o método. Ao mudar para outra família de problemas, o editor abre
    uma tabela inicial apropriada para seus dados.
 3. Edite as células ou cole uma tabela separada por Tab ou ponto e vírgula.

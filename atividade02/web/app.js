@@ -2,6 +2,9 @@
 import { $, element, format, table, download, groupOf } from "./util.js";
 import { Editor } from "./editor.js";
 import { drawChart, initializeTooltips } from "./graficos.js";
+import { initializeTheme } from "./tema.js";
+
+initializeTheme();
 
 const methodNames = {
   gauss: "Eliminação de Gauss",
@@ -715,9 +718,23 @@ $("save-scenario").addEventListener("click", () => {
 $("download-svg").addEventListener("click", () => {
   const copy = $("chart").cloneNode(true);
   copy.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  // O SVG exportado leva sua paleta junto, sem depender do CSS da aplicação.
+  const theme = getComputedStyle(document.documentElement);
+  for (const property of theme) {
+    if (property.startsWith("--plot-"))
+      copy.style.setProperty(property, theme.getPropertyValue(property));
+  }
+  const background = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "rect",
+  );
+  background.setAttribute("width", "760");
+  background.setAttribute("height", "340");
+  background.setAttribute("fill", theme.getPropertyValue("--surface").trim());
+  copy.prepend(background);
   const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
   style.textContent =
-    "text{font-family:Arial,sans-serif;font-size:var(--chart-font-size,16px);fill:#415c49}.strong{fill:#315c45;font-weight:bold}.point-label,.axis-label{font-size:var(--chart-label-size,14px)}";
+    "text{font-family:Arial,sans-serif;font-size:var(--chart-font-size,16px);fill:var(--plot-label)}.strong{fill:var(--plot-green);font-weight:bold}.point-label,.axis-label{font-size:var(--chart-label-size,14px)}";
   copy.prepend(style);
   copy.setAttribute(
     "aria-label",

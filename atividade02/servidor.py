@@ -40,7 +40,7 @@ class Requisicao(SimpleHTTPRequestHandler):
         caminho = urlsplit(self.path).path
         if caminho == "/api/exemplos":
             self.responder_json(exemplos())
-        elif caminho in ("/", "/index.html", "/estilos.css", "/app.js", "/graficos.js", "/editor.js", "/util.js"):
+        elif caminho in ("/", "/index.html", "/estilos.css", "/app.js", "/graficos.js", "/editor.js", "/util.js", "/tema.js"):
             self.path = caminho
             super().do_GET()
         else:

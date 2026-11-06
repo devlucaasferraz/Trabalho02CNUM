@@ -73,7 +73,7 @@ class TestHTTP(unittest.TestCase):
         cls.thread.join(timeout=3)
 
     def test_pagina_e_modulos_locais(self):
-        for caminho in ('/', '/app.js', '/editor.js', '/graficos.js', '/util.js', '/estilos.css'):
+        for caminho in ('/', '/app.js', '/editor.js', '/graficos.js', '/util.js', '/tema.js', '/estilos.css'):
             with urlopen(self.url+caminho, timeout=5) as resposta:
                 self.assertEqual(resposta.status, 200)
                 self.assertIn("connect-src 'self'", resposta.headers['Content-Security-Policy'])

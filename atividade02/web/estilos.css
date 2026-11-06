@@ -1888,3 +1888,261 @@ body:not(.navigation-ready) .sidebar-section {
 .enlarged.sidebar-collapsed main {
   margin-left: 0;
 }
+
+/* Paleta compartilhada pelos gráficos na tela e nos arquivos SVG exportados. */
+:root {
+  --surface: #fff;
+  --plot-green: #367b63;
+  --plot-light: #cce3cc;
+  --plot-orange: #d39b4e;
+  --plot-blue: #668eaf;
+  --plot-grid: #e8ede1;
+  --plot-text: #7b8e75;
+  --plot-red: #b96355;
+  --plot-baseline: #b8c6b1;
+  --plot-reference: #b8c8ad;
+  --plot-halo: #f7ead4;
+  --plot-unused: #b9c4b1;
+  --plot-panel-active: #f5e1bc;
+  --plot-panel-done: #d0e5d1;
+  --plot-panel-future: #eff3ea;
+  --plot-future-line: #adbba5;
+  --plot-divider: #b8c9ac;
+  --plot-pivot: #d7e9bd;
+  --plot-rhs: #edf4e4;
+  --plot-zero: #f8faf5;
+  --plot-cell: #f0f3ec;
+  --plot-history: #d3ddca;
+  --plot-neutral: #b1bfa9;
+  --plot-joint: #55705a;
+  --plot-support: #edf0e5;
+  --plot-support-line: #acb9a2;
+  --plot-ground: #a4b099;
+  --plot-gray: #c6d0bc;
+  --plot-surface: white;
+  --plot-label: #415c49;
+}
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  margin-top: auto;
+  padding: 10px;
+  border: 1px solid #69887b;
+  border-radius: 6px;
+  background: transparent;
+  color: #eff6ef;
+  text-align: left;
+  font-size: 15px;
+  flex-shrink: 0;
+}
+.theme-icon {
+  flex-shrink: 0;
+}
+.sun-icon {
+  display: none;
+}
+[data-theme="dark"] .moon-icon {
+  display: none;
+}
+[data-theme="dark"] .sun-icon {
+  display: block;
+}
+.sidebar-content {
+  margin-bottom: 24px;
+}
+.sidebar-collapsed .theme-toggle {
+  width: 36px;
+  padding: 8px;
+  justify-content: center;
+  gap: 0;
+}
+@media screen {
+  :root[data-theme="dark"] {
+    --paper: #101915;
+    --surface: #1a2721;
+    --ink: #e3ede5;
+    --muted: #b5c9ba;
+    --line: #35483c;
+    --green: #94d1af;
+    --sidebar: #0d261e;
+    --plot-green: #90cfb0;
+    --plot-light: #294a3b;
+    --plot-orange: #edbe73;
+    --plot-blue: #9abde1;
+    --plot-grid: #35483e;
+    --plot-text: #bed0c0;
+    --plot-red: #ee9d8c;
+    --plot-baseline: #718b79;
+    --plot-reference: #81967b;
+    --plot-halo: #5a4528;
+    --plot-unused: #8a9c8b;
+    --plot-panel-active: #5c472b;
+    --plot-panel-done: #294c3c;
+    --plot-panel-future: #22332b;
+    --plot-future-line: #78917b;
+    --plot-divider: #64836c;
+    --plot-pivot: #416539;
+    --plot-rhs: #2c4233;
+    --plot-zero: #17241d;
+    --plot-cell: #25372c;
+    --plot-history: #52614f;
+    --plot-neutral: #8e9e86;
+    --plot-joint: #9bbc9f;
+    --plot-support: #314231;
+    --plot-support-line: #8f9e83;
+    --plot-ground: #7f9275;
+    --plot-gray: #71856c;
+    --plot-surface: #1a2721;
+    --plot-label: #cadcce;
+  }
+  [data-theme="dark"] .panel,
+  [data-theme="dark"] .icon-button,
+  [data-theme="dark"] #history th,
+  [data-theme="dark"] .matrix-editor th:last-child {
+    background: var(--surface);
+  }
+  [data-theme="dark"] .panel-heading,
+  [data-theme="dark"] .context-details,
+  [data-theme="dark"] .result-footer,
+  [data-theme="dark"] #history-details,
+  [data-theme="dark"] .comparison-table td,
+  [data-theme="dark"] .comparison-table th {
+    border-color: var(--line);
+  }
+  [data-theme="dark"] input,
+  [data-theme="dark"] select,
+  [data-theme="dark"] textarea {
+    background: #142019;
+    border-color: #48624f;
+    color: var(--ink);
+  }
+  [data-theme="dark"] input:focus,
+  [data-theme="dark"] select:focus,
+  [data-theme="dark"] textarea:focus {
+    outline-color: #9ccead;
+  }
+  [data-theme="dark"] input::placeholder,
+  [data-theme="dark"] textarea::placeholder {
+    color: #9fb4a3;
+  }
+  [data-theme="dark"] input[aria-invalid="true"] {
+    background: #3d2620;
+    border-color: #e3947c;
+  }
+  [data-theme="dark"] label,
+  [data-theme="dark"] .two-fields label,
+  [data-theme="dark"] .checkbox,
+  [data-theme="dark"] .chart-toolbar h3,
+  [data-theme="dark"] .step-explanation h3 {
+    color: var(--ink);
+  }
+  [data-theme="dark"] .intro p,
+  [data-theme="dark"] .eyebrow,
+  [data-theme="dark"] .topbar #topic,
+  [data-theme="dark"] .field-hint,
+  [data-theme="dark"] .paste-details,
+  [data-theme="dark"] .context-details,
+  [data-theme="dark"] .context-details p,
+  [data-theme="dark"] .matrix-details,
+  [data-theme="dark"] .data-table th,
+  [data-theme="dark"] .data-table .row-label,
+  [data-theme="dark"] .chart-toolbar p,
+  [data-theme="dark"] .legend,
+  [data-theme="dark"] .step-explanation p,
+  [data-theme="dark"] .result-footer,
+  [data-theme="dark"] #history-details,
+  [data-theme="dark"] .comparison-table th,
+  [data-theme="dark"] .metric small,
+  [data-theme="dark"] .metric .metric-unit,
+  [data-theme="dark"] .stepper #step-counter {
+    color: var(--muted);
+  }
+  [data-theme="dark"] .metric b {
+    color: #a5dcba;
+  }
+  [data-theme="dark"] .metric {
+    border-color: var(--line);
+  }
+  [data-theme="dark"] .text-button {
+    color: #b4ddbd;
+  }
+  [data-theme="dark"] .primary {
+    background: #9acfb0;
+    color: #102c1b;
+  }
+  [data-theme="dark"] .secondary,
+  [data-theme="dark"] .tiny-button,
+  [data-theme="dark"] .badge,
+  [data-theme="dark"] .segmented button.active {
+    background: #2b4432;
+    color: #c8e5cd;
+    border-color: #48634c;
+  }
+  [data-theme="dark"] .segmented {
+    border-color: var(--line);
+  }
+  [data-theme="dark"] .segmented button {
+    color: #b8cdba;
+  }
+  [data-theme="dark"] .stepper {
+    background: #15241c;
+    border-color: var(--line);
+  }
+  [data-theme="dark"] .icon-button {
+    border-color: #48634c;
+    color: #c8e5cd;
+  }
+  [data-theme="dark"] .matrix-editor .rhs,
+  [data-theme="dark"] .comparison-table .highlight td {
+    background: #273e2e;
+  }
+  [data-theme="dark"] .comparison-table td:first-child {
+    color: #c4e4c8;
+  }
+  [data-theme="dark"] .guide {
+    background: #243b2b;
+    color: #d0e4d2;
+    border-color: #48634c;
+  }
+  [data-theme="dark"] .notice {
+    background: #3b3120;
+    color: #e8cf9b;
+    border-color: #6e5c36;
+  }
+  [data-theme="dark"] .error {
+    background: #3d2620;
+    color: #f1b7a5;
+    border-color: #925d4c;
+  }
+  [data-theme="dark"] .enlarged {
+    background: var(--paper);
+  }
+  [data-theme="dark"] .tooltip {
+    background: #d3e8d7;
+    color: #15271b;
+  }
+  [data-theme="dark"] .remove-point {
+    color: #b8cdba;
+  }
+  [data-theme="dark"] .empty h3 {
+    color: #c8e5cd;
+  }
+  [data-theme="dark"] .empty {
+    color: var(--muted);
+  }
+  [data-theme="dark"] #chart text,
+  [data-theme="dark"] #chart .axis-label,
+  [data-theme="dark"] #chart .point-label {
+    fill: var(--plot-label);
+  }
+  [data-theme="dark"] #chart .strong {
+    fill: #cae5cf;
+  }
+}
+@media print {
+  .theme-toggle {
+    display: none;
+  }
+}
