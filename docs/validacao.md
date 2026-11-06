@@ -62,3 +62,20 @@ Capturas com “primeira-versao” documentam o progresso, não o estado final.
 - [Rio, versão final](capturas/14-rio-final.jpg)
 - [Produção, versão final](capturas/15-producao-final.jpg)
 - [Interpolação, versão final](capturas/16-interpolacao-final.jpg)
+
+## Revisão de navegação e legibilidade
+
+- Barra lateral abre e fecha pelo botão Exemplos, com `aria-expanded` atualizado.
+- A preferência é mantida após recarregar, sem alterar os dados do cálculo.
+- Em telas estreitas, a biblioteca é uma sobreposição e fecha ao selecionar um exemplo.
+- Textos de apoio têm pelo menos 14 px; entradas usam 16 px e rótulos, 15 px.
+- A escala do SVG é compensada para manter 16 px nos valores e 14 px nos eixos.
+- Conferidos layouts de 1440, 1100 e 390 px, sem transbordamento da página.
+- Produção recalculada após alternar a navegação: 90, 60 e 80 componentes.
+- Console sem erros na rodada de conferência.
+
+Capturas dessa revisão substituem as anteriores como referência da interface:
+
+- [Barra retraída e tipografia revisada](capturas/17-navegacao-retraida-tipografia.jpg)
+- [Barra aberta](capturas/18-tipografia-barra-aberta.jpg)
+- [Tela estreita](capturas/19-tipografia-mobile.jpg)
