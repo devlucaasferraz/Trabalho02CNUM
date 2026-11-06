@@ -1,0 +1,2 @@
+# A estrutura inicial usa apenas a biblioteca padrão do Python.
+# Adicionar dependências externas conforme forem utilizadas.
