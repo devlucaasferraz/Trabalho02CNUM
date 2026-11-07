@@ -1,4 +1,4 @@
-# Atividade 02 de cálculo numérico
+# Simulador de métodos numéricos
 
 Trabalho acadêmico de LES710C, UNIVASF. Um único simulador reúne os quatro
 exemplos da atividade e permite calcular com dados informados pelo usuário.
