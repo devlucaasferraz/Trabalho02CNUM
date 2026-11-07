@@ -82,9 +82,9 @@ button:hover:not(:disabled) {
   align-items: center;
   color: #fff;
   text-decoration: none;
-  font-family: Georgia, serif;
+  font-family: "Segoe UI", sans-serif;
   font-size: 22px;
-  letter-spacing: -0.6px;
+  letter-spacing: 0;
   margin-bottom: 48px;
 }
 .brand small {
@@ -103,7 +103,8 @@ button:hover:not(:disabled) {
   border-radius: 11px;
   display: grid;
   place-items: center;
-  font-size: 32px;
+  font-size: 18px;
+  font-weight: 600;
   color: #c6e1ac;
 }
 .sidebar-section {

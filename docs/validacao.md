@@ -165,3 +165,11 @@ a reprodução automática, o painel em tela ampla e o console sem erros.
 
 - [Primeira parcela somada](capturas/30-interpolacao-primeiro-passo.jpg)
 - [Segunda parcela somada](capturas/31-interpolacao-segundo-passo.jpg)
+
+## Identificação do trabalho
+
+Removido o nome “Entre pontos” da interface, do título da página, do CSV e da
+apresentação no README. A barra identifica apenas “Atividade 02” e “Cálculo
+numérico”, com o número 02 no atalho inicial. Conferido no navegador.
+
+- [Identificação acadêmica](capturas/32-identificacao-academica.jpg)

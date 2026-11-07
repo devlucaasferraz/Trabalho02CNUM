@@ -589,7 +589,7 @@ function exportCsv() {
   const d = state.input,
     r = state.result;
   const lines = [
-    ["Entre pontos", d.titulo || "Dados próprios"],
+    ["Atividade 02 · Cálculo numérico", d.titulo || "Dados próprios"],
     ["Método", r.nome_metodo],
     ["Status", r.status],
     ["Resíduo máximo", r.residuo == null ? "" : format(r.residuo, 12)],

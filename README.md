@@ -1,7 +1,7 @@
-# Entre pontos · atividade 02 de cálculo numérico
+# Atividade 02 de cálculo numérico
 
-Um único laboratório visual para experimentar métodos numéricos com os quatro
-exemplos do trabalho ou com seus próprios dados. Desenvolvido para LES710C, UNIVASF.
+Trabalho acadêmico de LES710C, UNIVASF. Um único simulador reúne os quatro
+exemplos da atividade e permite calcular com dados informados pelo usuário.
 
 ## Executar sem internet
 
@@ -38,7 +38,7 @@ sistema e gráficos SVG são locais. Nenhum CDN ou serviço remoto é usado.
 1. Escolha um exemplo na biblioteca ou clique em **Usar meus dados**.
    O botão no cabeçalho da própria barra mostra ou retrai a biblioteca e lembra sua
    escolha. Em telas estreitas ela abre sobre o conteúdo e fecha após a seleção.
-   Retraída, mantém o logo, o botão de dados próprios e os quatro exemplos
+   Retraída, mantém o atalho inicial, o botão de dados próprios e os quatro exemplos
    acessíveis por ícones, com identificação ao passar o mouse. A transição é
    animada e respeita a preferência por movimento reduzido.
    O botão de sol/lua na base da barra alterna entre os temas claro e escuro.
