@@ -64,7 +64,7 @@ Sistemas próprios aceitam de 2 a 12 equações; tabelas aceitam até 100 pontos
 | --- | --- |
 | 01.2: componentes elétricos | Gauss com pivotamento parcial; operações na matriz e solução em barras |
 | 02.2: treliça | Gauss-Seidel; forças por barra, reações e curva de convergência |
-| 03.2: tensão no resistor | Lagrange e Newton, graus 2 a 4; nós, estimativa, parcelas e comparação dos graus |
+| 03.2: tensão no resistor | Lagrange e Newton, graus 2 a 4; detalhe do alvo, visão geral, construção e comparação dos graus |
 | 04.1: seção de rio | Trapézio e Simpson 1/3 repetidos; áreas por painel e soma acumulada |
 
 Na treliça, Gauss-Seidel é aplicado a `AᵀA x = Aᵀb` para contornar os zeros
@@ -126,7 +126,7 @@ serve à explicação visual, sem substituir os resultados calculados no Python.
 python -B -m unittest discover -s tests -v
 ```
 
-Os 21 testes cobrem exatidão, resíduo, equilíbrio de forças e momentos,
+Os 22 testes cobrem exatidão, resíduo, equilíbrio de forças e momentos,
 interpolação de polinômios conhecidos, restrições de Simpson, erros de entrada,
 API local e ausência de dependências remotas. Os testes HTTP abrem uma porta
 temporária somente em loopback.

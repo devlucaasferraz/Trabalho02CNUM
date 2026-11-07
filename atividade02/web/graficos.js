@@ -112,119 +112,205 @@ function axes(
   return { X, Y, left, right, top, bottom };
 }
 
-function drawInterpolation(result, data, index, view) {
-  const contributions = view === "parcelas";
-  const activeCurve = result.curvas_parcelas[index];
-  const accumulatedCurve = result.curva_x.map((_, j) =>
-    result.curvas_parcelas
-      .slice(0, index + 1)
-      .reduce((sum, curve) => sum + curve[j], 0),
-  );
-  const { X, Y } = axes(
-    result.curva_x,
-    [
-      ...data.ys,
-      ...result.curva_y,
-      result.valor,
-      ...(contributions ? [...activeCurve, ...accumulatedCurve] : []),
-    ],
-    data.eixo_x || "x",
-    data.eixo_y || "y",
-  );
-  path(
-    result.curva_x.map((x, i) => [X(x), Y(result.curva_y[i])]),
-    {
-      stroke: contributions ? "var(--plot-reference)" : colors.green,
-      "stroke-width": 2.6,
-      "stroke-dasharray": contributions ? "5 4" : "none",
-    },
-  );
-  if (contributions) {
-    path(
-      result.curva_x.map((x, j) => [X(x), Y(activeCurve[j])]),
-      {
-        stroke: colors.orange,
-        "stroke-width": 2.3,
-      },
-    );
-    path(
-      result.curva_x.map((x, j) => [X(x), Y(accumulatedCurve[j])]),
-      {
-        stroke: colors.green,
-        "stroke-width": 2.6,
-      },
-    );
+/** Eixos locais com marcas nos valores medidos, em vez de divisões arbitrárias. */
+function interpolationAxes(domain, values, nodes, target, data) {
+  const xmin = domain[0],
+    xmax = domain[1];
+  const minimum = Math.min(0, ...values),
+    maximum = Math.max(0, ...values);
+  const span = maximum - minimum || 1;
+  const rawStep = span / 5;
+  const magnitude = 10 ** Math.floor(Math.log10(rawStep));
+  const step =
+    [1, 2, 2.5, 5, 10].find((value) => value >= rawStep / magnitude) *
+    magnitude;
+  const ymin = Math.floor((minimum - span * 0.08) / step) * step;
+  const ymax = Math.ceil((maximum + span * 0.08) / step) * step;
+  const left = 70,
+    right = 720,
+    top = 24,
+    bottom = 270;
+  const X = (x) => left + ((x - xmin) / (xmax - xmin)) * (right - left);
+  const Y = (y) => bottom - ((y - ymin) / (ymax - ymin)) * (bottom - top);
+  for (let value = ymin; value <= ymax + step / 10; value += step) {
+    line(left, Y(value), right, Y(value), {
+      stroke: colors.grid,
+      "stroke-dasharray": "3 5",
+    });
+    text(left - 12, Y(value) + 4, format(value, 3), { "text-anchor": "end" });
   }
-  const alvo = Number(String(data.alvo).replace(",", "."));
-  line(X(alvo), Y(0), X(alvo), Y(result.valor), {
+  line(left, Y(0), right, Y(0), { stroke: "var(--plot-baseline)" });
+  const ticks =
+    nodes.length <= 10
+      ? nodes
+      : Array.from({ length: 5 }, (_, i) => xmin + ((xmax - xmin) * i) / 4);
+  for (const x of ticks) {
+    if (Math.abs(X(x) - X(target)) < 40) continue;
+    line(X(x), bottom, X(x), bottom + 5, { stroke: "var(--plot-baseline)" });
+    text(X(x), bottom + 24, format(x, 3), { "text-anchor": "middle" });
+  }
+  text(X(target), bottom + 24, format(target, 4), {
+    "text-anchor": "middle",
+    class: "target-label",
+  });
+  text((left + right) / 2, 326, data.eixo_x || "x", {
+    "text-anchor": "middle",
+    class: "axis-label",
+  });
+  const yLabel = data.id === "tensao" ? "Tensão (V)" : data.eixo_y || "y";
+  text(18, 147, yLabel, {
+    transform: "rotate(-90 18 147)",
+    "text-anchor": "middle",
+    class: "axis-label",
+  });
+  return { X, Y, left, right, bottom };
+}
+
+function drawInterpolation(result, data, index, view) {
+  const contributions = view === "parcelas",
+    overview = view === "todos";
+  const curveX = overview ? result.curva_x : result.curva_local_x;
+  const curveY = overview ? result.curva_y : result.curva_local_y;
+  const curveTerms = overview ? result.curvas_parcelas : result.parcelas_locais;
+  const target = Number(data.alvo);
+  const minimum = Math.min(target, ...(overview ? data.xs : result.nos_x));
+  const maximum = Math.max(target, ...(overview ? data.xs : result.nos_x));
+  const margin = (maximum - minimum) * 0.12 || 1;
+  const domain = [minimum - margin, maximum + margin];
+  const samples = curveX
+    .map((x, i) => ({ x, i }))
+    .filter((point) => point.x >= domain[0] && point.x <= domain[1]);
+  const visibleMeasurements = data.xs
+    .map((x, i) => ({ x, y: data.ys[i], i }))
+    .filter((point) => point.x >= domain[0] && point.x <= domain[1]);
+  const activeCurve = curveTerms[index];
+  const accumulatedCurve = curveX.map((_, j) =>
+    curveTerms.slice(0, index + 1).reduce((sum, curve) => sum + curve[j], 0),
+  );
+  const values = [
+    ...visibleMeasurements.map((point) => point.y),
+    result.valor,
+    ...samples.map((point) => curveY[point.i]),
+  ];
+  // Uma escala comum a todos os passos evita que o gráfico "pule" na reprodução.
+  if (contributions)
+    for (const point of samples) {
+      let sum = 0;
+      for (const term of curveTerms) {
+        sum += term[point.i];
+        values.push(term[point.i], sum);
+      }
+    }
+  const { X, Y, left, bottom } = interpolationAxes(
+    domain,
+    values,
+    overview ? data.xs : result.nos_x,
+    target,
+    data,
+  );
+  const curvePoints = (values) =>
+    samples.map((point) => [X(point.x), Y(values[point.i])]);
+  path(curvePoints(curveY), {
+    stroke: contributions ? "var(--plot-reference)" : colors.green,
+    "stroke-width": contributions ? 1.8 : 3,
+    "stroke-dasharray": contributions ? "5 4" : "none",
+  });
+  if (contributions) {
+    path(curvePoints(activeCurve), {
+      stroke: colors.blue,
+      "stroke-width": 2,
+      "stroke-dasharray": "5 3",
+    });
+    path(curvePoints(accumulatedCurve), {
+      stroke: colors.green,
+      "stroke-width": 3,
+    });
+  }
+  line(X(target), bottom, X(target), Y(result.valor), {
     stroke: colors.orange,
     "stroke-dasharray": "5 4",
-    "stroke-width": 1.4,
+    "stroke-width": 1.7,
   });
-  line(X(Math.min(...data.xs)), Y(result.valor), X(alvo), Y(result.valor), {
+  line(left, Y(result.valor), X(target), Y(result.valor), {
     stroke: colors.orange,
     "stroke-dasharray": "5 4",
+    "stroke-width": 1.2,
   });
-  data.xs.forEach((x, i) => {
-    const selected = result.indices.includes(i),
-      active = i === result.indices[index];
-    if (active)
+  for (const point of visibleMeasurements) {
+    const selected = result.indices.includes(point.i);
+    const active = point.i === result.indices[index];
+    if (active && contributions)
       add("circle", {
-        cx: X(x),
-        cy: Y(data.ys[i]),
-        r: 12,
-        fill: "var(--plot-halo)",
+        cx: X(point.x),
+        cy: Y(point.y),
+        r: 10,
+        fill: "none",
+        stroke: colors.blue,
+        "stroke-width": 1.5,
+        "stroke-dasharray": "3 3",
       });
     tip(
       add("circle", {
-        cx: X(x),
-        cy: Y(data.ys[i]),
+        cx: X(point.x),
+        cy: Y(point.y),
         r: selected ? 5.5 : 4,
-        fill: active
-          ? colors.orange
-          : selected
-            ? colors.green
-            : "var(--plot-unused)",
+        fill: selected ? colors.blue : "var(--plot-unused)",
         stroke: "var(--plot-surface)",
         "stroke-width": 2,
       }),
-      `Ponto ${i + 1}: x = ${format(x)}; y = ${format(data.ys[i])}${selected ? " · nó utilizado" : ""}`,
+      `Medição: x = ${format(point.x)}; y = ${format(point.y)} · ${selected ? "usada no polinômio" : "não utilizada neste grau"}`,
     );
-  });
+    if (selected)
+      text(X(point.x) - 12, Y(point.y) - 13, format(point.y, 3), {
+        "text-anchor": "end",
+        class: "point-label",
+      });
+  }
+  const tx = X(target),
+    ty = Y(result.valor);
   tip(
-    add("circle", {
-      cx: X(alvo),
-      cy: Y(result.valor),
-      r: 6,
+    add("polygon", {
+      points: `${tx},${ty - 8} ${tx + 8},${ty} ${tx},${ty + 8} ${tx - 8},${ty}`,
       fill: colors.orange,
       stroke: "var(--plot-surface)",
       "stroke-width": 2,
     }),
-    `Estimativa: P(${format(alvo)}) = ${format(result.valor)}`,
+    `Estimativa no alvo: P(${format(target)}) = ${format(result.valor, 7)}`,
   );
-  text(
-    X(alvo) + 11,
-    Y(result.valor) - 14,
-    `P(${format(alvo)}) = ${format(result.valor)}`,
-    { class: "strong" },
-  );
+  const hidden = data.xs.length - visibleMeasurements.length;
+  const summary = document.getElementById("interpolation-summary");
+  summary.replaceChildren();
+  const readout = document.createElement("p");
+  readout.textContent = `No alvo ${format(target)}, a estimativa é ${format(result.valor, 7)}${data.unidade ? ` ${data.unidade}` : ""}. O losango laranja marca esse valor; os pontos azuis são medições usadas.`;
+  summary.append(readout);
+  if (hidden > 0) {
+    const note = document.createElement("p");
+    note.className = "field-hint";
+    note.textContent = `${hidden} ${hidden === 1 ? "medição está fora" : "medições estão fora"} deste recorte. Veja o conjunto completo em “Todos os dados”.`;
+    summary.append(note);
+  }
+  const legend = contributions
+    ? [
+        ["Soma até este passo", "green"],
+        ["Parcela em foco", "blue", "dashed"],
+        ["Polinômio completo", "gray", "dashed"],
+        ["Estimativa no alvo", "orange", "diamond"],
+      ]
+    : [
+        ["Polinômio", "green"],
+        ["Medições usadas", "blue", "dot"],
+        ["Estimativa no alvo", "orange", "diamond"],
+      ];
+  if (visibleMeasurements.some((point) => !result.indices.includes(point.i)))
+    legend.push(["Outras medições", "gray", "dot"]);
   return {
     title: contributions
-      ? "Some as parcelas e veja o polinômio nascer"
-      : "Dos pontos ao polinômio",
-    subtitle: `Grau ${data.grau} · ${result.nos_x.length} nós escolhidos perto de x = ${format(alvo)}`,
-    legend: contributions
-      ? [
-          ["Soma até este passo", "green"],
-          ["Parcela em foco", "orange"],
-          ["Polinômio completo (tracejado)", "gray"],
-        ]
-      : [
-          ["Polinômio interpolador", "green"],
-          ["Nós utilizados", "green"],
-          ["Parcela / estimativa", "orange"],
-          ["Outras medições", "gray"],
-        ],
+      ? "Construção do polinômio"
+      : overview
+        ? "Todas as medições"
+        : "Estimativa perto do alvo",
+    subtitle: `Grau ${data.grau} · nós usados: ${result.nos_x.map((x) => format(x)).join("; ")}${contributions ? ` · parcela ${index + 1} de ${result.passos.length}` : ""}`,
+    legend,
   };
 }
 
@@ -608,6 +694,12 @@ export function drawChart(result, data, index, view) {
   $("chart").replaceChildren(
     svg("title", {}, `${result.nome_metodo} · visualização didática`),
   );
+  const interpolation = ["lagrange", "newton"].includes(result.metodo);
+  $("chart").parentElement.classList.toggle(
+    "interpolation-chart",
+    interpolation,
+  );
+  $("interpolation-summary").hidden = !interpolation;
   let meta;
   if (["lagrange", "newton"].includes(result.metodo))
     meta = drawInterpolation(result, data, index, view);
@@ -632,9 +724,10 @@ export function drawChart(result, data, index, view) {
   $("chart-title").textContent = meta.title;
   $("chart-subtitle").textContent = meta.subtitle;
   $("legend").replaceChildren();
-  meta.legend.forEach(([label, color]) => {
+  meta.legend.forEach(([label, color, shape = "line"]) => {
     const span = document.createElement("span"),
       dot = document.createElement("i");
+    dot.className = `legend-${shape}`;
     dot.style.background = colors[color] || "var(--plot-gray)";
     span.append(dot, document.createTextNode(label));
     $("legend").append(span);

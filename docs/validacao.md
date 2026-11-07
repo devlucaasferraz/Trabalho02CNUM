@@ -117,3 +117,23 @@ paleta incorporados. Console sem erros nessa rodada.
 
 - [Tema escuro](capturas/23-tema-escuro.jpg)
 - [Tema claro](capturas/24-tema-claro.jpg)
+
+## Interpolação com foco no alvo
+
+A visualização inicial usa um recorte dos nós escolhidos e do alvo. “Todos os
+dados” exibe o conjunto completo; “Construção” mostra as parcelas e a soma
+acumulada. A escala da construção considera todos os passos para permanecer
+estável durante a reprodução. Medições usadas são pontos azuis; a estimativa é
+um losango laranja, com projeção no eixo e valor explicado abaixo do gráfico.
+
+A curva local é amostrada no Python, preservando resolução mesmo quando existem
+medições distantes. Um teste com um ponto a um milhão de unidades verifica essa
+propriedade contra a função conhecida x². A suíte passou com 22 testes.
+
+Conferidos no navegador o recorte inicial, as três visões, a troca para Newton,
+o grau 4 e a visualização no tema escuro, sem erros no console. Na largura de
+1725 px, a área SVG normal ficou limitada a 860 × 385 px aproximadamente.
+
+- [Detalhe da estimativa](capturas/25-interpolacao-foco-no-alvo.jpg)
+- [Construção do polinômio](capturas/26-interpolacao-construcao.jpg)
+- [Newton de grau 4 no tema escuro](capturas/27-interpolacao-escuro.jpg)

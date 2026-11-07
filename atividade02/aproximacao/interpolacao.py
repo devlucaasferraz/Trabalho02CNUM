@@ -61,6 +61,14 @@ def interpolar(abscissas, ordenadas, alvo, grau=2, metodo="lagrange"):
     avaliar = lambda x: avaliar_newton(nos_x, coeficientes, x)[0]
     parcelas_curva = [avaliar_lagrange(nos_x, nos_y, x)[1] if metodo == "lagrange"
                       else avaliar_newton(nos_x, coeficientes, x)[1] for x in curva_x]
+    # Amostra própria para o detalhe: medições distantes não reduzem a resolução
+    # do gráfico na região dos nós escolhidos para a interpolação.
+    limite_local_a, limite_local_b = min(nos_x[0], alvo), max(nos_x[-1], alvo)
+    margem_local = (limite_local_b-limite_local_a)*0.12
+    curva_local_x = [limite_local_a-margem_local
+                     +(limite_local_b-limite_local_a+2*margem_local)*i/240 for i in range(241)]
+    parcelas_locais = [avaliar_lagrange(nos_x, nos_y, x)[1] if metodo == "lagrange"
+                       else avaliar_newton(nos_x, coeficientes, x)[1] for x in curva_local_x]
     comparacao = []
     for g in range(2, min(4, len(xs)-1)+1):
         ids = sorted(sorted(range(len(xs)), key=lambda i: (abs(xs[i]-alvo), xs[i]))[:g+1])
@@ -72,6 +80,9 @@ def interpolar(abscissas, ordenadas, alvo, grau=2, metodo="lagrange"):
             "passos": passos, "nos_x": nos_x, "nos_y": nos_y, "indices": indices,
             "curva_x": curva_x, "curva_y": [avaliar(x) for x in curva_x],
             "curvas_parcelas": [[linha[i] for linha in parcelas_curva] for i in range(grau+1)],
+            "curva_local_x": curva_local_x,
+            "curva_local_y": [avaliar(x) for x in curva_local_x],
+            "parcelas_locais": [[linha[i] for linha in parcelas_locais] for i in range(grau+1)],
             "coeficientes": coeficientes, "diferencas": tabela, "comparacao": comparacao,
             "extrapolacao": not xs[0] <= alvo <= xs[-1], "convergiu": True,
             "status": "Extrapolação: alvo fora dos dados" if not xs[0] <= alvo <= xs[-1] else "Interpolação calculada"}

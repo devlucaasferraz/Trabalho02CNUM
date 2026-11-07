@@ -2146,3 +2146,45 @@ body:not(.navigation-ready) .sidebar-section {
     display: none;
   }
 }
+
+/* Interpolação: escala local e identificação sem rótulos sobre a curva. */
+.interpolation-chart #chart {
+  max-width: 860px;
+  margin-inline: auto;
+}
+#chart .target-label,
+[data-theme] #chart .target-label {
+  fill: var(--plot-orange);
+  font-weight: 700;
+}
+.interpolation-summary {
+  padding: 0 24px 16px;
+  color: var(--ink);
+}
+.interpolation-summary p {
+  margin: 4px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.interpolation-summary .field-hint {
+  color: var(--muted);
+  font-size: 14px;
+}
+.legend .legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.legend .legend-diamond {
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  transform: rotate(45deg);
+}
+.legend .legend-dashed {
+  height: 2px;
+  mask: repeating-linear-gradient(to right, #000 0 5px, transparent 5px 8px);
+}
+.enlarged .interpolation-chart #chart {
+  max-width: 1100px;
+}

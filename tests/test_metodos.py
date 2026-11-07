@@ -76,6 +76,14 @@ class TestInterpolacao(unittest.TestCase):
         with self.assertRaises(ValueError):
             interpolar([1, 1, 2], [1, 2, 3], 1.5)
 
+    def test_recorte_local_preserva_resolucao_com_medicao_distante(self):
+        resultado = interpolar([0, 1, 2, 1000000], [0, 1, 4, 1000000000000], 1)
+        self.assertEqual(resultado['nos_x'], [0, 1, 2])
+        self.assertEqual(len(resultado['curva_local_x']), 241)
+        self.assertLess(resultado['curva_local_x'][-1]-resultado['curva_local_x'][0], 3)
+        for x, y in zip(resultado['curva_local_x'], resultado['curva_local_y']):
+            self.assertAlmostEqual(y, x*x)
+
 
 class TestIntegracao(unittest.TestCase):
     def test_exatidao(self):
