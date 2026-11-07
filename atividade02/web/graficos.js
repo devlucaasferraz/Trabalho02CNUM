@@ -114,6 +114,10 @@ function axes(
 
 /** Eixos locais com marcas nos valores medidos, em vez de divisões arbitrárias. */
 function interpolationAxes(domain, values, nodes, target, data) {
+  const [, , width, height] = $("chart")
+    .getAttribute("viewBox")
+    .split(" ")
+    .map(Number);
   const xmin = domain[0],
     xmax = domain[1];
   const minimum = Math.min(0, ...values),
@@ -127,9 +131,9 @@ function interpolationAxes(domain, values, nodes, target, data) {
   const ymin = Math.floor((minimum - span * 0.08) / step) * step;
   const ymax = Math.ceil((maximum + span * 0.08) / step) * step;
   const left = 70,
-    right = 720,
+    right = width - 34,
     top = 24,
-    bottom = 270;
+    bottom = height - 70;
   const X = (x) => left + ((x - xmin) / (xmax - xmin)) * (right - left);
   const Y = (y) => bottom - ((y - ymin) / (ymax - ymin)) * (bottom - top);
   for (let value = ymin; value <= ymax + step / 10; value += step) {
@@ -153,13 +157,14 @@ function interpolationAxes(domain, values, nodes, target, data) {
     "text-anchor": "middle",
     class: "target-label",
   });
-  text((left + right) / 2, 326, data.eixo_x || "x", {
+  text((left + right) / 2, height - 14, data.eixo_x || "x", {
     "text-anchor": "middle",
     class: "axis-label",
   });
   const yLabel = data.id === "tensao" ? "Tensão (V)" : data.eixo_y || "y";
-  text(18, 147, yLabel, {
-    transform: "rotate(-90 18 147)",
+  const middleY = (top + bottom) / 2;
+  text(18, middleY, yLabel, {
+    transform: `rotate(-90 18 ${middleY})`,
     "text-anchor": "middle",
     class: "axis-label",
   });
@@ -700,6 +705,24 @@ export function drawChart(result, data, index, view) {
     interpolation,
   );
   $("interpolation-summary").hidden = !interpolation;
+  // O recorte ocupa o painel em coordenadas próprias, sem teto fixo de largura.
+  // Fontes e marcadores mantêm o mesmo tamanho ao redimensionar a janela.
+  const width = interpolation
+    ? Math.max(620, Math.round($("chart").parentElement.clientWidth))
+    : 760;
+  const height = interpolation
+    ? Math.max(340, Math.min(520, Math.round(width * 0.4)))
+    : 340;
+  $("chart").setAttribute("viewBox", `0 0 ${width} ${height}`);
+  const renderedWidth = $("chart").getBoundingClientRect().width || width;
+  $("chart").style.setProperty(
+    "--chart-font-size",
+    `${(16 * width) / renderedWidth}px`,
+  );
+  $("chart").style.setProperty(
+    "--chart-label-size",
+    `${(14 * width) / renderedWidth}px`,
+  );
   let meta;
   if (["lagrange", "newton"].includes(result.metodo))
     meta = drawInterpolation(result, data, index, view);
@@ -739,11 +762,23 @@ export function initializeTooltips() {
     tooltip = $("tooltip");
   // O viewBox escala os textos com o gráfico. Compensamos essa escala para
   // preservar 16 px nos valores e 14 px nos rótulos ao retrair a navegação.
+  let previousWidth = 0;
   new ResizeObserver(([entry]) => {
     const width = entry.contentRect.width;
     if (!width) return;
-    chart.style.setProperty("--chart-font-size", `${(16 * 760) / width}px`);
-    chart.style.setProperty("--chart-label-size", `${(14 * 760) / width}px`);
+    const baseWidth = Number(chart.getAttribute("viewBox").split(" ")[2]);
+    chart.style.setProperty(
+      "--chart-font-size",
+      `${(16 * baseWidth) / width}px`,
+    );
+    chart.style.setProperty(
+      "--chart-label-size",
+      `${(14 * baseWidth) / width}px`,
+    );
+    if (Math.abs(width - previousWidth) >= 0.5) {
+      previousWidth = width;
+      chart.dispatchEvent(new Event("chartresize"));
+    }
   }).observe(chart);
   function show(event) {
     const node = event.target.closest("[data-tip]");

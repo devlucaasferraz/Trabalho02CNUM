@@ -32,6 +32,10 @@ const state = {
   history: [],
 };
 const editor = new Editor(markDirty, showError);
+$("chart").addEventListener("chartresize", () => {
+  if (state.result && groupOf(state.result.metodo) === "interpolacao")
+    renderStep();
+});
 
 // Apenas a preferência de navegação é persistida; os dados dos cálculos não são.
 const sidebarPreference = "entre-pontos-sidebar-collapsed";
@@ -731,8 +735,9 @@ $("download-svg").addEventListener("click", () => {
     "http://www.w3.org/2000/svg",
     "rect",
   );
-  background.setAttribute("width", "760");
-  background.setAttribute("height", "340");
+  const [, , width, height] = copy.getAttribute("viewBox").split(" ");
+  background.setAttribute("width", width);
+  background.setAttribute("height", height);
   background.setAttribute("fill", theme.getPropertyValue("--surface").trim());
   copy.prepend(background);
   const style = document.createElementNS("http://www.w3.org/2000/svg", "style");

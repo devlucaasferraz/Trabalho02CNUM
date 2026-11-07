@@ -137,3 +137,16 @@ o grau 4 e a visualização no tema escuro, sem erros no console. Na largura de
 - [Detalhe da estimativa](capturas/25-interpolacao-foco-no-alvo.jpg)
 - [Construção do polinômio](capturas/26-interpolacao-construcao.jpg)
 - [Newton de grau 4 no tema escuro](capturas/27-interpolacao-escuro.jpg)
+
+## Controles e dimensão do gráfico
+
+Reprodução e pausa agora usam desenhos SVG, sem caracteres de fonte. Conferidos
+o estado com duas barras visíveis e o retorno ao ícone de reprodução após pausar.
+
+O teto de 860 px da interpolação foi removido. O SVG usa a largura efetiva do
+painel e recalcula os eixos ao redimensionar, preservando textos e marcadores.
+Conferidos 1725 e 1280 px, abertura/retração da barra e a visão de construção,
+sem erros no console. O SVG exportado também usa as dimensões do gráfico atual.
+
+- [Ícone de pausa em SVG](capturas/28-controle-pausa-svg.jpg)
+- [Interpolação ocupando a largura do painel](capturas/29-interpolacao-largura-do-painel.jpg)

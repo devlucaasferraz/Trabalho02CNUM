@@ -2149,8 +2149,8 @@ body:not(.navigation-ready) .sidebar-section {
 
 /* Interpolação: escala local e identificação sem rótulos sobre a curva. */
 .interpolation-chart #chart {
-  max-width: 860px;
-  margin-inline: auto;
+  max-width: none;
+  margin: 0;
 }
 #chart .target-label,
 [data-theme] #chart .target-label {
@@ -2186,7 +2186,7 @@ body:not(.navigation-ready) .sidebar-section {
   mask: repeating-linear-gradient(to right, #000 0 5px, transparent 5px 8px);
 }
 .enlarged .interpolation-chart #chart {
-  max-width: 1100px;
+  max-width: none;
 }
 
 /* Controles de reprodução desenhados em SVG, sem glifos da fonte do sistema. */
