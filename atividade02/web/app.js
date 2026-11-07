@@ -81,7 +81,7 @@ function showError(message) {
 function stop() {
   if (state.timer) clearInterval(state.timer);
   state.timer = null;
-  $("play").textContent = "▶";
+  $("play").dataset.playing = "false";
   $("play").setAttribute("aria-label", "Reproduzir passos");
 }
 function clearResults(
@@ -678,7 +678,7 @@ function play() {
   }
   if (state.step === state.result.passos.length - 1) state.step = 0;
   renderStep();
-  $("play").textContent = "Ⅱ";
+  $("play").dataset.playing = "true";
   $("play").setAttribute("aria-label", "Pausar passos");
   state.timer = setInterval(
     () => {

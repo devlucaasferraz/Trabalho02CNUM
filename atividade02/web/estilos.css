@@ -2188,3 +2188,12 @@ body:not(.navigation-ready) .sidebar-section {
 .enlarged .interpolation-chart #chart {
   max-width: 1100px;
 }
+
+/* Controles de reprodução desenhados em SVG, sem glifos da fonte do sistema. */
+#play .playback-pause,
+#play[data-playing="true"] .playback-play {
+  display: none;
+}
+#play[data-playing="true"] .playback-pause {
+  display: block;
+}
