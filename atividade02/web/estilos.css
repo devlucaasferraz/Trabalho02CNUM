@@ -2197,3 +2197,13 @@ body:not(.navigation-ready) .sidebar-section {
 #play[data-playing="true"] .playback-pause {
   display: block;
 }
+
+#chart [data-step] {
+  cursor: pointer;
+}
+#chart [data-step]:hover,
+#chart [data-step]:focus-visible {
+  stroke: var(--plot-blue);
+  stroke-width: 4;
+  outline: none;
+}

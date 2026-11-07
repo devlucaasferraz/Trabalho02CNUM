@@ -150,3 +150,18 @@ sem erros no console. O SVG exportado também usa as dimensões do gráfico atua
 
 - [Ícone de pausa em SVG](capturas/28-controle-pausa-svg.jpg)
 - [Interpolação ocupando a largura do painel](capturas/29-interpolacao-largura-do-painel.jpg)
+
+## Interpolação sincronizada com os passos
+
+As três visões agora desenham a soma das parcelas até o passo selecionado.
+O losango e suas projeções acompanham o valor acumulado; o polinômio final
+permanece tracejado como referência durante os passos intermediários.
+A escala considera todos os passos para evitar mudanças durante a reprodução.
+
+Conferidos no navegador a mudança da curva e do marcador de −0,056 V para
+0,728 V, a chegada ao resultado final de 0,3269333 V, as três visões e Newton.
+Medições azuis selecionam parcelas por clique ou Enter. Também foram conferidos
+a reprodução automática, o painel em tela ampla e o console sem erros.
+
+- [Primeira parcela somada](capturas/30-interpolacao-primeiro-passo.jpg)
+- [Segunda parcela somada](capturas/31-interpolacao-segundo-passo.jpg)

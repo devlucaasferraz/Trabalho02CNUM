@@ -328,7 +328,7 @@ function renderMetrics() {
   } else if (groupOf(r.metodo) === "interpolacao") {
     $("metrics").append(
       metric(
-        "Estimativa no alvo",
+        "Resultado final no alvo",
         format(r.valor),
         d.unidade || "",
         "P(x) no ponto informado",
@@ -622,6 +622,19 @@ function exportCsv() {
 }
 
 $("simulation-form").addEventListener("submit", calculate);
+function selectGraphStep(event) {
+  const point = event.target.closest("[data-step]");
+  if (!point || !state.result) return;
+  if (event.type === "keydown" && !["Enter", " "].includes(event.key)) return;
+  event.preventDefault();
+  stop();
+  state.step = Number(point.dataset.step);
+  renderStep();
+  if (event.type === "keydown")
+    $("chart").querySelector(`[data-step="${state.step}"]`)?.focus();
+}
+$("chart").addEventListener("click", selectGraphStep);
+$("chart").addEventListener("keydown", selectGraphStep);
 $("examples").addEventListener("click", (event) => {
   const button = event.target.closest("[data-example]");
   if (button)

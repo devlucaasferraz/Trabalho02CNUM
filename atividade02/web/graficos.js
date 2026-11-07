@@ -174,6 +174,8 @@ function interpolationAxes(domain, values, nodes, target, data) {
 function drawInterpolation(result, data, index, view) {
   const contributions = view === "parcelas",
     overview = view === "todos";
+  const lastStep = index === result.passos.length - 1;
+  const partialValue = result.passos[index].acumulado;
   const curveX = overview ? result.curva_x : result.curva_local_x;
   const curveY = overview ? result.curva_y : result.curva_local_y;
   const curveTerms = overview ? result.curvas_parcelas : result.parcelas_locais;
@@ -198,14 +200,14 @@ function drawInterpolation(result, data, index, view) {
     ...samples.map((point) => curveY[point.i]),
   ];
   // Uma escala comum a todos os passos evita que o gráfico "pule" na reprodução.
-  if (contributions)
-    for (const point of samples) {
-      let sum = 0;
-      for (const term of curveTerms) {
-        sum += term[point.i];
-        values.push(term[point.i], sum);
-      }
+  for (const point of samples) {
+    let sum = 0;
+    for (const term of curveTerms) {
+      sum += term[point.i];
+      values.push(sum);
+      if (contributions) values.push(term[point.i]);
     }
+  }
   const { X, Y, left, bottom } = interpolationAxes(
     domain,
     values,
@@ -215,28 +217,53 @@ function drawInterpolation(result, data, index, view) {
   );
   const curvePoints = (values) =>
     samples.map((point) => [X(point.x), Y(values[point.i])]);
-  path(curvePoints(curveY), {
-    stroke: contributions ? "var(--plot-reference)" : colors.green,
-    "stroke-width": contributions ? 1.8 : 3,
-    "stroke-dasharray": contributions ? "5 4" : "none",
-  });
+  if (!lastStep)
+    path(curvePoints(curveY), {
+      stroke: "var(--plot-reference)",
+      "stroke-width": 1.8,
+      "stroke-dasharray": "5 4",
+    });
   if (contributions) {
     path(curvePoints(activeCurve), {
       stroke: colors.blue,
       "stroke-width": 2,
       "stroke-dasharray": "5 3",
     });
-    path(curvePoints(accumulatedCurve), {
-      stroke: colors.green,
-      "stroke-width": 3,
-    });
   }
-  line(X(target), bottom, X(target), Y(result.valor), {
+  path(curvePoints(accumulatedCurve), {
+    stroke: colors.green,
+    "stroke-width": 3,
+    "data-curve": "soma-parcial",
+  });
+  if (!lastStep)
+    tip(
+      add("circle", {
+        cx: X(target),
+        cy: Y(result.valor),
+        r: 6,
+        fill: "none",
+        stroke: "var(--plot-reference)",
+        "stroke-width": 2,
+      }),
+      `Resultado final: ${format(result.valor, 7)}`,
+    );
+  for (let previous = 0; previous < index; previous++)
+    tip(
+      add("circle", {
+        cx: X(target),
+        cy: Y(result.passos[previous].acumulado),
+        r: 3,
+        fill: colors.orange,
+        opacity: 0.45,
+      }),
+      `Passo ${previous + 1}: ${format(result.passos[previous].acumulado, 7)}`,
+    );
+  line(X(target), bottom, X(target), Y(partialValue), {
     stroke: colors.orange,
     "stroke-dasharray": "5 4",
     "stroke-width": 1.7,
   });
-  line(left, Y(result.valor), X(target), Y(result.valor), {
+  line(left, Y(partialValue), X(target), Y(partialValue), {
     stroke: colors.orange,
     "stroke-dasharray": "5 4",
     "stroke-width": 1.2,
@@ -244,7 +271,7 @@ function drawInterpolation(result, data, index, view) {
   for (const point of visibleMeasurements) {
     const selected = result.indices.includes(point.i);
     const active = point.i === result.indices[index];
-    if (active && contributions)
+    if (active)
       add("circle", {
         cx: X(point.x),
         cy: Y(point.y),
@@ -262,8 +289,11 @@ function drawInterpolation(result, data, index, view) {
         fill: selected ? colors.blue : "var(--plot-unused)",
         stroke: "var(--plot-surface)",
         "stroke-width": 2,
+        ...(selected
+          ? { "data-step": result.indices.indexOf(point.i), role: "button" }
+          : {}),
       }),
-      `Medição: x = ${format(point.x)}; y = ${format(point.y)} · ${selected ? "usada no polinômio" : "não utilizada neste grau"}`,
+      `Medição: x = ${format(point.x)}; y = ${format(point.y)} · ${selected ? `selecionar parcela ${result.indices.indexOf(point.i) + 1}` : "não utilizada neste grau"}`,
     );
     if (selected)
       text(X(point.x) - 12, Y(point.y) - 13, format(point.y, 3), {
@@ -272,22 +302,31 @@ function drawInterpolation(result, data, index, view) {
       });
   }
   const tx = X(target),
-    ty = Y(result.valor);
+    ty = Y(partialValue);
   tip(
     add("polygon", {
       points: `${tx},${ty - 8} ${tx + 8},${ty} ${tx},${ty + 8} ${tx - 8},${ty}`,
       fill: colors.orange,
       stroke: "var(--plot-surface)",
       "stroke-width": 2,
+      "data-partial-value": partialValue,
     }),
-    `Estimativa no alvo: P(${format(target)}) = ${format(result.valor, 7)}`,
+    `Soma no passo ${index + 1}: ${format(partialValue, 7)}`,
   );
   const hidden = data.xs.length - visibleMeasurements.length;
   const summary = document.getElementById("interpolation-summary");
   summary.replaceChildren();
   const readout = document.createElement("p");
-  readout.textContent = `No alvo ${format(target)}, a estimativa é ${format(result.valor, 7)}${data.unidade ? ` ${data.unidade}` : ""}. O losango laranja marca esse valor; os pontos azuis são medições usadas.`;
+  const unit = data.unidade ? ` ${data.unidade}` : "";
+  readout.textContent = lastStep
+    ? `Resultado final: P(${format(target)}) = ${format(result.valor, 7)}${unit}. Todas as ${result.passos.length} parcelas foram somadas.`
+    : `Passo ${index + 1} de ${result.passos.length}: soma parcial no alvo ${format(target)} = ${format(partialValue, 7)}${unit}. Resultado final: ${format(result.valor, 7)}${unit} (tracejado).`;
   summary.append(readout);
+  const interactionHint = document.createElement("p");
+  interactionHint.className = "field-hint";
+  interactionHint.textContent =
+    "Avance os passos ou clique em uma medição azul para explorar sua parcela.";
+  summary.append(interactionHint);
   if (hidden > 0) {
     const note = document.createElement("p");
     note.className = "field-hint";
@@ -298,14 +337,14 @@ function drawInterpolation(result, data, index, view) {
     ? [
         ["Soma até este passo", "green"],
         ["Parcela em foco", "blue", "dashed"],
-        ["Polinômio completo", "gray", "dashed"],
-        ["Estimativa no alvo", "orange", "diamond"],
+        ["Valor neste passo", "orange", "diamond"],
       ]
     : [
-        ["Polinômio", "green"],
+        [lastStep ? "Polinômio completo" : "Soma até este passo", "green"],
         ["Medições usadas", "blue", "dot"],
-        ["Estimativa no alvo", "orange", "diamond"],
+        ["Valor neste passo", "orange", "diamond"],
       ];
+  if (!lastStep) legend.push(["Resultado final", "gray", "dashed"]);
   if (visibleMeasurements.some((point) => !result.indices.includes(point.i)))
     legend.push(["Outras medições", "gray", "dot"]);
   return {
@@ -314,7 +353,7 @@ function drawInterpolation(result, data, index, view) {
       : overview
         ? "Todas as medições"
         : "Estimativa perto do alvo",
-    subtitle: `Grau ${data.grau} · nós usados: ${result.nos_x.map((x) => format(x)).join("; ")}${contributions ? ` · parcela ${index + 1} de ${result.passos.length}` : ""}`,
+    subtitle: `Grau ${data.grau} · parcela ${index + 1} de ${result.passos.length} · nós usados: ${result.nos_x.map((x) => format(x)).join("; ")}`,
     legend,
   };
 }
