@@ -150,6 +150,7 @@ O registro de testes no navegador está em [docs/validacao.md](docs/validacao.md
 
 ## Membros da Equipe
 
+
 | :--- |
 | **Derik Alexandre** |
 | **João Gabriel** |
