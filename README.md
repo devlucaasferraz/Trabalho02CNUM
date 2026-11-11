@@ -1,7 +1,10 @@
-# Simulador de métodos numéricos
+# Simulador de Métodos Numéricos
 
-Trabalho acadêmico de LES710C, UNIVASF. Um único simulador reúne os quatro
-exemplos da atividade e permite calcular com dados informados pelo usuário.
+> **Trabalho Acadêmico | Disciplina LES710C**  
+> **Universidade Federal do Vale do São Francisco (UNIVASF)**
+
+Um único simulador reúne os quatro exemplos da atividade 
+e permite calcular com dados informados pelo usuário.
 
 ## Executar sem internet
 
@@ -143,3 +146,12 @@ O registro de testes no navegador está em [docs/validacao.md](docs/validacao.md
   de subintervalos. A diferença entre as regras não é um erro certificado.
 - A treliça tem geometria fixa. Alterar seus coeficientes transforma a entrada em
   um sistema genérico, e o desenho estrutural deixa de ser utilizado.
+
+
+## Membros da Equipe
+
+| Membros |
+| :--- |
+| **Derik Alexandre** |
+| **João Gabriel** |
+| **Lucas Emanoel** |
