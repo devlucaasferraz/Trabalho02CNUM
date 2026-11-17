@@ -17,7 +17,15 @@ class TestServico(unittest.TestCase):
         for exemplo in exemplos():
             with self.subTest(exemplo=exemplo['id']):
                 resultado = simular(exemplo)
-                self.assertTrue(resultado['convergiu'])
+                if exemplo['metodo'] == 'gauss_seidel':
+                    self.assertTrue(resultado['convergiu'])
+                else:
+                    self.assertNotIn('convergiu', resultado)
+                self.assertNotIn('status', resultado)
+                self.assertNotIn('nome_metodo', resultado)
+                for passo in resultado['passos']:
+                    self.assertNotIn('titulo', passo)
+                    self.assertNotIn('explicacao', passo)
                 self.assertGreater(len(resultado['passos']), 0)
                 json.dumps(resultado, allow_nan=False)
 
@@ -27,6 +35,18 @@ class TestServico(unittest.TestCase):
         self.assertIn('trelica', simular(entrada))
         entrada['a'][0][0] += 0.1
         self.assertNotIn('trelica', simular(entrada))
+
+    def test_paineis_de_simpson_calculados_no_python(self):
+        resultado = simular({
+            'metodo': 'simpson', 'xs': [0, 1, 2], 'ys': [0, 1, 4],
+        })
+        self.assertEqual(len(resultado['paineis']), 1)
+        curva = resultado['paineis'][0]
+        self.assertEqual(len(curva), 33)
+        self.assertEqual(curva[0], [0, 0])
+        self.assertEqual(curva[-1], [2, 4])
+        for x, y in curva:
+            self.assertAlmostEqual(y, x*x)
 
     def test_ambas_formas_e_soma_das_parcelas(self):
         for metodo in ('lagrange', 'newton'):
@@ -73,7 +93,7 @@ class TestHTTP(unittest.TestCase):
         cls.thread.join(timeout=3)
 
     def test_pagina_e_modulos_locais(self):
-        for caminho in ('/', '/app.js', '/editor.js', '/graficos.js', '/util.js', '/tema.js', '/estilos.css'):
+        for caminho in ('/', '/app.js', '/editor.js', '/graficos.js', '/util.js', '/tema.js', '/apresentacao.js', '/estilos.css'):
             with urlopen(self.url+caminho, timeout=5) as resposta:
                 self.assertEqual(resposta.status, 200)
                 self.assertIn("connect-src 'self'", resposta.headers['Content-Security-Policy'])

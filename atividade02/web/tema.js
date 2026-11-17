@@ -15,6 +15,9 @@ function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
   document.documentElement.style.colorScheme = theme;
   const dark = theme === "dark";
+  document.querySelector('meta[name="theme-color"]').content = dark
+    ? "#111419"
+    : "#20252d";
   const button = document.getElementById("toggle-theme");
   if (button) {
     const action = dark ? "Ativar modo claro" : "Ativar modo escuro";

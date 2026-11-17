@@ -3,17 +3,10 @@ import { $, element, format, table, download, groupOf } from "./util.js";
 import { Editor } from "./editor.js";
 import { drawChart, initializeTooltips } from "./graficos.js";
 import { initializeTheme } from "./tema.js";
+import { apresentarResultado, methodNames } from "./apresentacao.js";
 
 initializeTheme();
 
-const methodNames = {
-  gauss: "Eliminação de Gauss",
-  gauss_seidel: "Gauss-Seidel",
-  lagrange: "Lagrange",
-  newton: "Newton",
-  trapezio: "Trapézio repetido",
-  simpson: "Simpson 1/3 repetido",
-};
 const topicNames = {
   sistema: "Sistemas lineares",
   interpolacao: "Interpolação polinomial",
@@ -143,6 +136,12 @@ function loadExample(data, auto = true) {
   clearResults();
   state.source = structuredClone(data);
   editor.render(data, data.metodo);
+  const methods = Object.entries(methodNames).filter(
+    ([method]) => data.id === "custom" || groupOf(method) === groupOf(data.metodo),
+  );
+  $("method").replaceChildren(
+    ...methods.map(([value, name]) => element("option", { value }, name)),
+  );
   $("method").value = data.metodo;
   setHeader(data);
   $("source-badge").textContent = data.codigo
@@ -215,10 +214,11 @@ async function calculate(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    const result = await response.json();
+    let result = await response.json();
     if (request !== state.request) return;
     if (!response.ok || result.erro)
       throw new Error(result.erro || "Não foi possível calcular.");
+    result = apresentarResultado(result, data);
     state.input = data;
     state.result = result;
     state.step = result.passos.length - 1;
@@ -262,7 +262,7 @@ async function calculate(event) {
       warnings.push(
         "A matriz não é diagonalmente dominante por linhas. Essa condição suficiente não foi satisfeita; acompanhe a convergência.",
       );
-    if (!result.convergiu)
+    if (result.metodo === "gauss_seidel" && !result.convergiu)
       warnings.push(
         "O limite de iterações foi atingido. Os valores são aproximações que ainda não satisfazem os critérios de parada.",
       );
@@ -322,7 +322,9 @@ function renderMetrics() {
         r.metodo === "gauss" ? "Operações" : "Iterações",
         String(r.metodo === "gauss" ? r.passos.length - 1 : r.iteracoes),
         "",
-        r.convergiu ? "Resultado verificado" : "Precisão não atingida",
+        r.metodo === "gauss"
+          ? "Solução calculada; confira o resíduo"
+          : r.convergiu ? "Resultado verificado" : "Precisão não atingida",
       ),
     );
   } else if (groupOf(r.metodo) === "interpolacao") {
@@ -657,7 +659,9 @@ $("method").addEventListener("change", () => {
   const data = { ...editor.data, ...raw, ...editor.rawOptions(), metodo: next };
   editor.render(data, next);
   $("topic").textContent = topicNames[groupOf(next)];
-  markDirty();
+  clearResults(
+    "O método foi alterado. Calcule novamente para atualizar os resultados.",
+  );
 });
 $("custom").addEventListener("click", () => {
   loadExample(customData($("method").value), false);
@@ -755,7 +759,7 @@ $("download-svg").addEventListener("click", () => {
   copy.prepend(background);
   const style = document.createElementNS("http://www.w3.org/2000/svg", "style");
   style.textContent =
-    "text{font-family:Arial,sans-serif;font-size:var(--chart-font-size,16px);fill:var(--plot-label)}.strong{fill:var(--plot-green);font-weight:bold}.target-label{fill:var(--plot-orange);font-weight:bold}.point-label,.axis-label{font-size:var(--chart-label-size,14px)}";
+    "text{font-family:Arial,sans-serif;font-size:var(--chart-font-size,16px);fill:var(--plot-label)}.strong{fill:var(--plot-primary);font-weight:bold}.target-label{fill:var(--plot-orange);font-weight:bold}.point-label,.axis-label{font-size:var(--chart-label-size,14px)}";
   copy.prepend(style);
   copy.setAttribute(
     "aria-label",
@@ -828,10 +832,10 @@ async function start() {
     if (!response.ok) throw new Error("Servidor local indisponível.");
     state.examples = await response.json();
     const names = {
-      producao: ["▥", "Componentes elétricos", "Sistemas · métodos diretos"],
+      producao: ["▥", "Componentes elétricos", "Sistemas · Métodos diretos"],
       trelica: ["△", "Equilíbrio da treliça", "Sistemas · Gauss-Seidel"],
       tensao: ["⌁", "Tensão no resistor", "Interpolação · Lagrange / Newton"],
-      rio: ["≋", "Seção de um rio", "Integração · trapézio / Simpson"],
+      rio: ["≋", "Seção de um rio", "Integração · Trapézio / Simpson"],
     };
     state.examples.forEach((data) => {
       const [icon, title, subtitle] = names[data.id];

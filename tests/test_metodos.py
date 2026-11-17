@@ -12,7 +12,7 @@ class TestGauss(unittest.TestCase):
     def test_pivotamento_e_reconstrucao(self):
         resultado = resolver_gauss([[0, 2], [1, 3]], [4, 7])
         self.assertEqual(resultado['solucao'], [1, 2])
-        self.assertEqual(resultado['passos'][1]['titulo'], 'Troca de linhas')
+        self.assertEqual(resultado['passos'][1]['operacao'], 'troca')
         self.assertLess(resultado['residuo'], 1e-12)
 
     def test_producao(self):

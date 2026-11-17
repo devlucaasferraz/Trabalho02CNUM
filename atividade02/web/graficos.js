@@ -3,7 +3,7 @@ import { $, format } from "./util.js";
 
 const NS = "http://www.w3.org/2000/svg";
 const colors = {
-  green: "var(--plot-green)",
+  green: "var(--plot-primary)",
   light: "var(--plot-light)",
   orange: "var(--plot-orange)",
   blue: "var(--plot-blue)",
@@ -360,30 +360,7 @@ function drawInterpolation(result, data, index, view) {
 
 function drawIntegration(result, data, index) {
   const down = data.id === "rio";
-  const panels = result.passos.map((step) => {
-    const points = [];
-    if (result.metodo === "trapezio") {
-      points.push(
-        [data.xs[step.inicio], data.ys[step.inicio]],
-        [data.xs[step.fim], data.ys[step.fim]],
-      );
-    } else {
-      const i = step.inicio,
-        x0 = data.xs[i],
-        x1 = data.xs[i + 1],
-        x2 = data.xs[i + 2];
-      // Parábola local de três nós: usada apenas para desenhar o painel de Simpson.
-      for (let j = 0; j <= 32; j++) {
-        const x = x0 + ((x2 - x0) * j) / 32;
-        const y =
-          (data.ys[i] * (x - x1) * (x - x2)) / ((x0 - x1) * (x0 - x2)) +
-          (data.ys[i + 1] * (x - x0) * (x - x2)) / ((x1 - x0) * (x1 - x2)) +
-          (data.ys[i + 2] * (x - x0) * (x - x1)) / ((x2 - x0) * (x2 - x1));
-        points.push([x, y]);
-      }
-    }
-    return points;
-  });
+  const panels = result.paineis;
   const { X, Y } = axes(
     data.xs,
     [...data.ys, ...panels.flatMap((panel) => panel.map((point) => point[1]))],

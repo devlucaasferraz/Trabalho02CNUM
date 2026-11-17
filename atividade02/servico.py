@@ -4,18 +4,11 @@ from time import perf_counter
 from atividade02.exemplos import exemplo_trelica
 from atividade02.metodos_diretos.gauss import resolver_gauss
 from atividade02.metodos_iterativos.gauss_seidel import resolver_gauss_seidel
-from atividade02.aproximacao.interpolacao import interpolar
+from atividade02.aproximacao.interpolacao import interpolar, avaliar_lagrange
 from atividade02.integracao.quadratura import integrar
 from atividade02.validacao import numero, pontos
 
-METODOS = {
-    "gauss": "Eliminação de Gauss",
-    "gauss_seidel": "Gauss-Seidel",
-    "lagrange": "Lagrange",
-    "newton": "Newton: diferenças divididas",
-    "trapezio": "Trapézio repetido",
-    "simpson": "Simpson 1/3 repetido",
-}
+METODOS = {"gauss", "gauss_seidel", "lagrange", "newton", "trapezio", "simpson"}
 
 
 def simular(entrada):
@@ -24,7 +17,7 @@ def simular(entrada):
     metodo = entrada.get("metodo")
     if metodo not in METODOS:
         raise ValueError("Método desconhecido.")
-    inicio = perf_counter()
+    inicio_calculo = perf_counter()
     if metodo == "gauss":
         resultado = resolver_gauss(entrada.get("a"), entrada.get("b"))
     elif metodo == "gauss_seidel":
@@ -40,16 +33,29 @@ def simular(entrada):
     else:
         resultado = integrar(entrada.get("xs"), entrada.get("ys"), metodo)
         xs, ys = pontos(entrada["xs"], entrada["ys"])
+        # A interface recebe as curvas prontas; não interpola os painéis.
+        resultado["paineis"] = []
+        for passo in resultado["passos"]:
+            inicio, fim = passo["inicio"], passo["fim"]
+            if metodo == "trapezio":
+                curva = [[xs[inicio], ys[inicio]], [xs[fim], ys[fim]]]
+            else:
+                nos_x, nos_y = xs[inicio:fim+1], ys[inicio:fim+1]
+                curva = []
+                for j in range(33):
+                    x = xs[inicio] + (xs[fim] - xs[inicio]) * j / 32
+                    y = avaliar_lagrange(nos_x, nos_y, x)[0]
+                    curva.append([x, y])
+            resultado["paineis"].append(curva)
         resultado["comparacao"] = []
         for alternativa in ("trapezio", "simpson"):
             try:
                 outro = integrar(xs, ys, alternativa)
-                resultado["comparacao"].append({"metodo": METODOS[alternativa], "valor": outro["valor"]})
+                resultado["comparacao"].append({"metodo": alternativa, "valor": outro["valor"]})
             except ValueError as erro:
-                resultado["comparacao"].append({"metodo": METODOS[alternativa], "erro": str(erro)})
-    resultado["tempo_ms"] = (perf_counter()-inicio)*1000
+                resultado["comparacao"].append({"metodo": alternativa, "erro": str(erro)})
+    resultado["tempo_ms"] = (perf_counter()-inicio_calculo)*1000
     resultado["metodo"] = metodo
-    resultado["nome_metodo"] = METODOS[metodo]
     # Desenhar a treliça só é válido quando os coeficientes ainda são os do modelo.
     if metodo in ("gauss", "gauss_seidel"):
         trelica = exemplo_trelica()

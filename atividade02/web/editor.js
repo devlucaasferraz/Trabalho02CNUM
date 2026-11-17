@@ -200,7 +200,7 @@ export class Editor {
       element(
         "p",
         { class: "field-hint" },
-        "Edite qualquer célula. A coluna verde é o vetor b. Use Tab para avançar entre os valores.",
+        "Edite qualquer célula. A última coluna contém o vetor b (termos independentes). Use Tab para avançar entre os valores.",
       ),
     );
   }

@@ -111,6 +111,7 @@ atividade02/
         index.html              Estrutura sem templates Python embutidos
         estilos.css             Tema, responsividade, ampliação e impressão
         app.js                  Fluxo da interface e apresentação dos resultados
+        apresentacao.js         Textos dos passos, mensagens e formatação dos resultados
         editor.js               Matrizes, pontos, colagem e validação dos campos
         graficos.js             Desenho SVG e informações ao passar o cursor
         util.js                 Formatação, elementos e downloads
@@ -123,16 +124,25 @@ com o resultado em cada algoritmo; não existe uma segunda implementação para
 animar a resolução. `servico.py` conecta essa camada à interface. A geometria SVG
 serve à explicação visual, sem substituir os resultados calculados no Python.
 
+Os métodos retornam dados e históricos numéricos. Títulos, explicações e mensagens
+de resultado são compostos no JavaScript, em `apresentacao.js`. O campo `convergiu`
+é exclusivo de Gauss-Seidel; os demais métodos não usam um critério iterativo de
+convergência. As curvas dos painéis de Simpson também são calculadas no Python.
+
 ## Verificar
 
 ```bash
 python -B -m unittest discover -s tests -v
 ```
 
-Os 22 testes cobrem exatidão, resíduo, equilíbrio de forças e momentos,
+Os 23 testes cobrem exatidão, resíduo, equilíbrio de forças e momentos,
 interpolação de polinômios conhecidos, restrições de Simpson, erros de entrada,
 API local e ausência de dependências remotas. Os testes HTTP abrem uma porta
 temporária somente em loopback.
+
+Para verificar também a composição dos textos no JavaScript, há um teste de
+desenvolvimento opcional: `node tests/test_apresentacao.mjs`. Ele usa Node.js e
+Python e cobre oito cenários. Node.js continua desnecessário para usar o simulador.
 
 O registro de testes no navegador está em [docs/validacao.md](docs/validacao.md).
 

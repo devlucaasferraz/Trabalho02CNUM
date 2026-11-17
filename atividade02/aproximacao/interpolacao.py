@@ -49,12 +49,8 @@ def interpolar(abscissas, ordenadas, alvo, grau=2, metodo="lagrange"):
     parcelas = parcelas_l if metodo == "lagrange" else parcelas_n
     passos = []
     for i, parcela in enumerate(parcelas):
-        explicacao = (f"L{i}(alvo) = {bases[i]:.6g}; y{i} × L{i} = {parcela:.6g}."
-                      if metodo == "lagrange" else
-                      f"Coeficiente de ordem {i}: {coeficientes[i]:.6g}. Parcela no alvo: {parcela:.6g}.")
-        passos.append({"titulo": f"Somar parcela {i+1} de {len(parcelas)}", "parcela": parcela,
-                       "acumulado": sum(parcelas[:i+1]), "indice": i,
-                       "explicacao": explicacao + " As parcelas formam o mesmo polinômio em ambas as formas."})
+        passos.append({"parcela": parcela, "acumulado": sum(parcelas[:i+1]),
+                       "indice": i, "base": bases[i] if metodo == "lagrange" else None})
     minimo, maximo = min(xs[0], alvo), max(xs[-1], alvo)
     margem = (maximo-minimo)*0.08
     curva_x = [minimo-margem+(maximo-minimo+2*margem)*i/240 for i in range(241)]
@@ -84,5 +80,4 @@ def interpolar(abscissas, ordenadas, alvo, grau=2, metodo="lagrange"):
             "curva_local_y": [avaliar(x) for x in curva_local_x],
             "parcelas_locais": [[linha[i] for linha in parcelas_locais] for i in range(grau+1)],
             "coeficientes": coeficientes, "diferencas": tabela, "comparacao": comparacao,
-            "extrapolacao": not xs[0] <= alvo <= xs[-1], "convergiu": True,
-            "status": "Extrapolação: alvo fora dos dados" if not xs[0] <= alvo <= xs[-1] else "Interpolação calculada"}
+            "extrapolacao": not xs[0] <= alvo <= xs[-1]}

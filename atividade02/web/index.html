@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#173d39" />
+    <meta name="theme-color" content="#20252d" />
     <title>Simulador de métodos numéricos</title>
     <link rel="icon" href="data:," />
     <link rel="stylesheet" href="/estilos.css" />
@@ -17,7 +17,7 @@
     >
       <div class="sidebar-header">
         <a class="brand" href="/" aria-label="Simulador de métodos numéricos, início"
-          ><span class="brand-symbol" aria-hidden="true">MN</span
+          ><span class="brand-symbol" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7M5 9v12h14V9M9 21v-8h6v8" /></svg></span
           ><span class="brand-label"
             >Simulador<small>de métodos numéricos</small></span
           ></a
@@ -142,20 +142,7 @@
           </div>
           <form id="simulation-form" novalidate>
             <label for="method">Método numérico</label>
-            <select id="method">
-              <optgroup label="Sistemas lineares">
-                <option value="gauss">Eliminação de Gauss</option>
-                <option value="gauss_seidel">Gauss-Seidel</option>
-              </optgroup>
-              <optgroup label="Interpolação">
-                <option value="lagrange">Lagrange</option>
-                <option value="newton">Newton · diferenças divididas</option>
-              </optgroup>
-              <optgroup label="Integração">
-                <option value="trapezio">Trapézio repetido</option>
-                <option value="simpson">Simpson 1/3 repetido</option>
-              </optgroup>
-            </select>
+            <select id="method"></select>
             <p class="field-hint" id="method-hint"></p>
             <div id="editor"></div>
             <details class="paste-details">

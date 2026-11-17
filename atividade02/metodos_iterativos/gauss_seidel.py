@@ -27,7 +27,7 @@ def resolver_gauss_seidel(matriz, termos, inicial=None, tolerancia=1e-4,
         b = [sum(original[k][i]*b_original[k] for k in range(n)) for i in range(n)]
     if any(a[i][i] == 0 for i in range(n)):
         raise ValueError("Há zero na diagonal. Reordene as equações ou ative AᵀA nas opções.")
-    passos = [{"titulo": "Aproximação inicial", "explicacao": "Ponto de partida da iteração.",
+    passos = [{"iteracao": 0,
                "solucao": x[:], "residuo": residuo(original, b_original, x), "variacao": 0}]
     convergiu = passos[0]["residuo"] <= tol
     for iteracao in range(1, limite+1):
@@ -41,14 +41,11 @@ def resolver_gauss_seidel(matriz, termos, inicial=None, tolerancia=1e-4,
             raise ValueError("As aproximações divergiram. Revise o sistema ou use AᵀA para um sistema não singular.")
         erro = residuo(original, b_original, x)
         variacao = max(abs(v-u) for v, u in zip(x, anterior))
-        passos.append({"titulo": f"Iteração {iteracao}", "solucao": x[:],
-                       "residuo": erro, "variacao": variacao,
-                       "explicacao": "Cada incógnita usa imediatamente os valores atualizados nesta iteração. "
-                       f"Maior variação: {variacao:.4g}; maior desequilíbrio |Ax − b|: {erro:.4g}."})
+        passos.append({"iteracao": iteracao, "solucao": x[:],
+                       "residuo": erro, "variacao": variacao})
         convergiu = erro <= tol and variacao <= tol
     return {"solucao": x, "residuo": passos[-1]["residuo"], "passos": passos,
             "iteracoes": len(passos)-1, "convergiu": convergiu,
-            "status": "Convergência atingida" if convergiu else "Limite atingido: precisão não alcançada",
             "equacoes_normais": equacoes_normais,
             "diagonal_dominante": all(abs(a[i][i]) >= sum(abs(a[i][j]) for j in range(n) if j != i) for i in range(n)),
             "matriz_iterada": a, "termos_iterados": b}
