@@ -1,40 +1,66 @@
-"""Eliminação de Gauss com pivotamento parcial e histórico para apresentação."""
-
 from atividade02.validacao import residuo, sistema
 
 
 def resolver_gauss(matriz, termos):
-    original, b_original = sistema(matriz, termos)
-    n = len(original)
-    aumentada = [linha[:] + [b] for linha, b in zip(original, b_original)]
+    A, b = sistema(matriz, termos)
+    n = len(A)
+
+    # matriz aumentada [A | b]
+    M = [A[i][:] + [b[i]] for i in range(n)]
+
     passos = []
 
-    def registrar(operacao, pivo=None, solucao=None, **dados):
-        passos.append({"operacao": operacao, **dados,
-                       "matriz": [linha[:] for linha in aumentada],
-                       "pivo": pivo, "solucao": solucao})
+    def salvar_passo(operacao, pivo=None, solucao=None, **extra):
+        passo = {
+            "operacao": operacao,
+            "matriz": [linha[:] for linha in M],
+            "pivo": pivo,
+            "solucao": solucao,
+        }
+        passo.update(extra)
+        passos.append(passo)
 
-    registrar("original")
-    for coluna in range(n):
-        linha_pivo = max(range(coluna, n), key=lambda i: abs(aumentada[i][coluna]))
-        escala = max(abs(v) for v in aumentada[linha_pivo][:-1])
-        if escala == 0 or abs(aumentada[linha_pivo][coluna]) <= 1e-14 * escala:
-            raise ValueError("O sistema é singular ou numericamente singular; não há solução única confiável.")
-        if linha_pivo != coluna:
-            aumentada[coluna], aumentada[linha_pivo] = aumentada[linha_pivo], aumentada[coluna]
-            registrar("troca", coluna, linha=coluna, outra_linha=linha_pivo)
-        for linha in range(coluna+1, n):
-            fator = aumentada[linha][coluna] / aumentada[coluna][coluna]
+    salvar_passo("original")
+
+    # aq ocorre o escalonamento
+    for k in range(n):
+        # pivotamento
+        p = k
+        for i in range(k + 1, n):
+            if abs(M[i][k]) > abs(M[p][k]):
+                p = i
+
+        # verfifica se o pivo é zero
+        maior = max(abs(x) for x in M[p][:-1])
+        if maior == 0 or abs(M[p][k]) <= 1e-14 * maior:
+            raise ValueError("Sistema singular: não tem solução única.")
+
+        if p != k:
+            M[k], M[p] = M[p], M[k]
+            salvar_passo("troca", k, linha=k, outra_linha=p)
+
+        for i in range(k + 1, n):
+            fator = M[i][k] / M[k][k]
             if fator == 0:
                 continue
-            for j in range(coluna, n+1):
-                aumentada[linha][j] -= fator * aumentada[coluna][j]
-            aumentada[linha][coluna] = 0.0
-            registrar("eliminacao", coluna, linha=linha, fator=fator)
-    solucao = [0.0] * n
-    for linha in range(n-1, -1, -1):
-        soma = sum(aumentada[linha][j] * solucao[j] for j in range(linha+1, n))
-        solucao[linha] = (aumentada[linha][-1] - soma) / aumentada[linha][linha]
-        registrar("substituicao", linha, solucao[:], linha=linha)
-    return {"solucao": solucao, "residuo": residuo(original, b_original, solucao),
-            "passos": passos}
+
+            for j in range(k, n + 1):
+                M[i][j] -= fator * M[k][j]
+            M[i][k] = 0.0 
+
+            salvar_passo("eliminacao", k, linha=i, fator=fator)
+
+    # substituição regressiva
+    x = [0.0] * n
+    for i in range(n - 1, -1, -1):
+        soma = 0.0
+        for j in range(i + 1, n):
+            soma += M[i][j] * x[j]
+        x[i] = (M[i][n] - soma) / M[i][i]
+        salvar_passo("substituicao", i, x[:], linha=i)
+
+    return {
+        "solucao": x,
+        "residuo": residuo(A, b, x),
+        "passos": passos,
+    }
